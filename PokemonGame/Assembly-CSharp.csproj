@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\ActivePokemon.cs" />
     <Compile Include="Assets\activeSetup.cs" />
     <Compile Include="Assets\AttackSystem.cs" />
     <Compile Include="Assets\Battle.cs" />

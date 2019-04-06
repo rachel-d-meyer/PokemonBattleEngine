@@ -11,25 +11,28 @@ public class TurnSystem : MonoBehaviour{
    public Slider fSlider, pSlider;
     public Image fImage, pImage;
     public Button next;
+    ActivePokemon fActive, pActive;
     Pokemon player, foe;
-    int cHP,fcHP;
+    int cHP,fcHP,aM,dM,spaM,spdM,faM,fdM,fspaM,fspdM;
     Move pMove, fMove;
     bool First;
     battleText b;
     PokeDex dex = PokeDex.GetPokeDex();
 
-    public void doStuff(Pokemon a, Pokemon f,Move fmove, Move pmove, battleText battletext,bool first,int cHp,int fcHp)
+    public void doStuff(ActivePokemon a, ActivePokemon f,Move fmove, Move pmove, battleText battletext,bool first,int cHp,int fcHp)
     {
+        fActive = f;
+        pActive = a;
         b = battletext;
-        player = a;
-        foe = f;
+        player = a.P;
+        foe = f.P;
         cHP = cHp;
         fcHP = fcHp;
         pMove = pmove;
         fMove = fmove;
         First = first;
         sentences = new Queue<string>();
-        
+        Debug.Log("DO Stuff Move :" + pMove.Name);
 
         if( fcHP > 0 && cHP > 0) {
             if (pmove.Info.Equals("First") && !(fmove.Info.Equals("First"))){
@@ -40,12 +43,12 @@ public class TurnSystem : MonoBehaviour{
             }
         if (first)
         {
-            damageCalc(pMove, player, foe);
+            damageCalc(pMove, a, f);
             updateText(player, foe, pmove, fmove, battletext);
          }
         else
         {
-            damageCalc(fMove, foe, player);
+            damageCalc(fMove, f, a);
             updateText(foe, player, fmove, pmove, battletext);
            }
 }
@@ -85,14 +88,14 @@ public class TurnSystem : MonoBehaviour{
             {
                 if (cHP > 0 && fcHP > 0)
                 {
-                    damageCalc(fMove, foe, player);
+                    damageCalc(fMove, fActive, pActive);
                 }
             }
             else
             {
                 
                 if(cHP>0 && fcHP> 0) { 
-                damageCalc(pMove, player, foe);}
+                damageCalc(pMove, pActive, fActive);}
             }
         }
         if (sentences.Count == 0)
@@ -129,25 +132,25 @@ public class TurnSystem : MonoBehaviour{
         //Turn off move panel
     }
 
-    void damageCalc(Move m, Pokemon a, Pokemon d)
+    void damageCalc(Move m, ActivePokemon a, ActivePokemon d)
     {
         //Calculate modifier
         
 
         double mod=1;
-        if (isSuperEffective(m, d))
+        if (isSuperEffective(m, d.P))
         {
             mod = mod*2;
         }
-        if (isNotEffective(m, d))
+        if (isNotEffective(m, d.P))
         {
             mod = mod * 0.5;
         }
-        if (isImmune(m, d))
+        if (isImmune(m, d.P))
         {
             mod = mod * 0;
         }
-        if (a.Type.Equals(m.Type))
+        if (a.P.Type.Equals(m.Type))
         {
             mod = mod*1.5;
         }
@@ -159,13 +162,13 @@ public class TurnSystem : MonoBehaviour{
             int typeD=0;
             if (m.Attack.Equals("S"))
             {
-                typeA = a.Stats[0].SpAtk;
-                typeD = d.Stats[0].SpDef;
+                typeA = a.P.Stats[0].SpAtk;
+                typeD = d.P.Stats[0].SpDef;
             }
             else if (m.Attack.Equals("P"))
             {
-                typeA = a.Stats[0].Atk;
-                typeD = d.Stats[0].Def;
+                typeA = a.P.Stats[0].Atk;
+                typeD = d.P.Stats[0].Def;
             }
         double dam = ((((((2 * 50) / 5) + 2) * m.Power * typeA / typeD) / 50) + 2) * mod;
         int damage = (int)dam;
@@ -174,18 +177,18 @@ public class TurnSystem : MonoBehaviour{
                 damage = 20;
             }
             Debug.Log(damage);
-        if (a.Equals(player))
+        if (a.Equals(pActive))
         {
                 if (m.Info.Equals("Drain"))
                 {
                     cHP = cHP + (damage / 2);
 
-                    if(cHP > a.Stats[0].HP)
+                    if(cHP > a.P.Stats[0].HP)
                     {
-                        cHP = a.Stats[0].HP;
+                        cHP = a.P.Stats[0].HP;
                     }
                     pSlider.value = cHP;
-                    sliderUpdate(pSlider, pImage,a);
+                    sliderUpdate(pSlider, pImage,a.P);
 
                 }
             fcHP = fcHP - damage;
@@ -194,7 +197,7 @@ public class TurnSystem : MonoBehaviour{
                 fcHP = 0;
             }
             fSlider.value = fcHP;
-                sliderUpdate(fSlider, fImage, d);
+                sliderUpdate(fSlider, fImage, d.P);
             
         }
         else
@@ -204,12 +207,12 @@ public class TurnSystem : MonoBehaviour{
                 {
                     fcHP = fcHP + (damage / 2);
 
-                    if (fcHP > a.Stats[0].HP)
+                    if (fcHP > a.P.Stats[0].HP)
                     {
-                        fcHP = a.Stats[0].HP;
+                        fcHP = a.P.Stats[0].HP;
                     }
                     fSlider.value = fcHP;
-                    sliderUpdate(fSlider, fImage, a);
+                    sliderUpdate(fSlider, fImage, a.P);
 
                 }
                 cHP = cHP - damage;
@@ -221,28 +224,28 @@ public class TurnSystem : MonoBehaviour{
             pSlider.value = cHP;
 
 
-                sliderUpdate(pSlider, pImage, d);
+                sliderUpdate(pSlider, pImage, d.P);
         }
 }
         else
         {
             if (a.Equals(player))
             {
-                cHP = cHP + (a.Stats[0].HP / 2);
-                if (cHP > a.Stats[0].HP)
+                cHP = cHP + (a.P.Stats[0].HP / 2);
+                if (cHP > a.P.Stats[0].HP)
                 {
-                    cHP = a.Stats[0].HP;
+                    cHP = a.P.Stats[0].HP;
                 }
-                sliderUpdate(pSlider, pImage, a);
+                sliderUpdate(pSlider, pImage, a.P);
             }
             else
             {
-                fcHP = fcHP + (a.Stats[0].HP / 2);
-                if (fcHP > a.Stats[0].HP)
+                fcHP = fcHP + (a.P.Stats[0].HP / 2);
+                if (fcHP > a.P.Stats[0].HP)
                 {
-                    fcHP = a.Stats[0].HP;
+                    fcHP = a.P.Stats[0].HP;
                 }
-                sliderUpdate(fSlider, fImage, a);
+                sliderUpdate(fSlider, fImage, a.P);
             }
         }
         hpText.text = cHP.ToString();

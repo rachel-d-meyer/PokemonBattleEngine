@@ -37,6 +37,42 @@ class MoveList
         _moves.Add(new Move(25, "Earth Power", "Ground", 90, "Damage", "S")); //Sp
         _moves.Add(new Move(26, "Thunder Fang", "Electric", 65, "Damage", "P")); //Phys
         _moves.Add(new Move(27, "Shadow Ball", "Ghost", 80, "Damage", "S")); //Sp
+        _moves.Add(new Move(28, "Wing Attack", "Flying", 60, "Damage", "P"));
+        _moves.Add(new Move(29, "Fire Fang", "Fire", 65, "Damage", "P"));
+        _moves.Add(new Move(30, "Power-Up Punch", "Fighting", 40, "AUp", "P"));
+        _moves.Add(new Move(31, "Bullet Punch", "Steel", 40, "First", "P"));
+        _moves.Add(new Move(32, "Drain Punch", "Fighting", 75, "Drain", "P"));
+        _moves.Add(new Move(33, "Thunder Punch", "Electric", 75, "Damage", "P"));
+        _moves.Add(new Move(34, "Close Combat", "Fighting", 120, "DDownSpDDown", "P"));
+        _moves.Add(new Move(35, "Bulk Up", "Null", 0, "AUpDUp", "null"));
+        _moves.Add(new Move(36, "Rolling Kick", "Fighting", 60, "Damage", "P"));
+        _moves.Add(new Move(37, "Freeze Dry", "Ice", 70, "IW", "S"));
+        _moves.Add(new Move(38, "Ice Beam", "Ice", 90, "Damage", "S"));
+        _moves.Add(new Move(39, "Ice Shard", "Ice", 40, "First", "P"));
+        _moves.Add(new Move(40, "Hidden Power (Fire)", "Fire", 60, "Damage", "S"));
+        _moves.Add(new Move(41, "Cross Chop", "Fighting", 100, "Damage", "P"));
+        _moves.Add(new Move(42, "Poison Jab", "Poison", 80, "Damage", "P"));
+        _moves.Add(new Move(43, "Splash", "Null", 0, "Nothing", "null"));
+        _moves.Add(new Move(44, "Flail", "Normal", 20, "Damage", "P"));
+        _moves.Add(new Move(45, "Celebrate", "Null", 0, "Celebrate", "null"));
+        _moves.Add(new Move(46, "Psychic", "Psychic", 90, "Damage", "S"));
+        _moves.Add(new Move(47, "Calm Mind", "Null", 0, "SpAUpSpDUp", "null"));
+        _moves.Add(new Move(48, "Magical Leaf", "Grass", 60, "Damage", "S"));
+        _moves.Add(new Move(49, "Light Screen", "Null", 0, "SPH5", "Null"));
+        _moves.Add(new Move(50, "Nasty Ploty", "Null", 0, "SpAUp2", "Null"));
+        _moves.Add(new Move(51, "Hyper Voice", "Normal", 90, "Damage", "S"));
+        _moves.Add(new Move(52, "Hidden Power (Ghost)", "Ghost", 60, "Damage", "S"));
+        _moves.Add(new Move(53, "Slash", "Normal", 70, "Damage", "P"));
+        _moves.Add(new Move(54, "Waterfall", "Water", 80, "Damage", "P"));
+        _moves.Add(new Move(55, "Recover", "null", 0, "Heal", "Null"));
+        _moves.Add(new Move(56, "Signal Beam", "Bug", 75, "Damage", "S"));
+        _moves.Add(new Move(57, "Ice Punch", "Ice", 75, "Damage", "P"));
+        _moves.Add(new Move(58, "Sludge Wave", "Poison", 95, "Damage", "S"));
+        _moves.Add(new Move(59, "Bubble Beam", "Water", 65, "Damage", "S"));
+        _moves.Add(new Move(60, "Sludge Bomb", "Poison", 90, "Damage", "S"));
+        _moves.Add(new Move(61, "Energy Ball", "Grass", 90, "Damage", "S"));
+        _moves.Add(new Move(62, "Dark Pulse", "Dark", 80, "Damage", "S"));
+
 
 
 

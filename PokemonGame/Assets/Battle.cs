@@ -25,6 +25,7 @@ public class Battle : MonoBehaviour
     Pokemon foe;
     Pokemon active;
     Pokemon pastActive;
+    ActivePokemon pActive, fActive;
     List<int> foeOrder = new List<int>();
     Move[] activeMoves = new Move[4];
     MoveList moveList = MoveList.GetMoveList();
@@ -42,12 +43,14 @@ public class Battle : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        fActive.Player = false;
+        pActive.Player = true;
         faintCountF = 0;
         faintCountP = 0;
         System.Random r = new System.Random();
         while (foeOrder.Count != 6)
         {
-            int x = r.Next(6);
+            int x = r.Next(allFoePokemon.Count);
             if (!foeOrder.Contains(x))
             {
                 foeOrder.Add(x);
@@ -73,11 +76,14 @@ public class Battle : MonoBehaviour
         switchTextPanel.SetActive(false);
         foeChanged.SetActive(false);
         active = findActive();
+        pActive.P = active;
         List<Pokemon> pokemon = dex.GetPokemon;
         enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
         String enemyName = enemyPokemon.transform.parent.tag;
      
         foe = findMon(enemyName, pokemon);
+        fActive.P = foe;
+       
         updateMon();
        
         foreach(Pokemon p in pokemon)
@@ -174,6 +180,7 @@ public class Battle : MonoBehaviour
         if (wasSwitched)
         {
             enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
+           
             String enemyName = enemyPokemon.transform.parent.tag;
             foe = findMon(enemyName, pokemon);
             f1.text = foe.Name;
@@ -182,19 +189,22 @@ public class Battle : MonoBehaviour
             slider.value = foe.Stats[0].HP;
             foeCurrent = foe.Stats[0].HP;
             wasSwitched = false;
+            fActive.P = foe;
         }
 
     }
 
 
     Pokemon findMon(String s, List<Pokemon> list)
-    {
+    { 
 
         foreach (Pokemon p in list)
         {
             if (p.Name.Equals(s))
             {
-                return p;
+                Pokemon new1 = new Pokemon();
+                new1 = p;
+                return new1;
             }
         }
         return new Pokemon();
@@ -227,34 +237,19 @@ public class Battle : MonoBehaviour
         damageStuff(used);
     }
 
-    void damageCalc(Move m, Pokemon a, Pokemon d)
-    {
-        //Damage  = ((((2*LVL)/5) +2) * Power *Attack/Defense) /50) +2
-        int damage = (((((2 * 50) / 5) + 2) * m.Power * a.Stats[0].Atk / d.Stats[0].Def) / 50) + 2;
-        if (a.Equals(active))
-        {
-            foeCurrent = foeCurrent - damage;
-            slider.value = foeCurrent;
-        }
-        else
-        {
-            playerCurrent = playerCurrent - damage;
-            pSlider.value = playerCurrent;
-        }
-
-    }
+ 
 
     void damageStuff(Move m)
     {
-        pMove = m;
-
+        //pMove = m;
+        Debug.Log(m.Name);
         Move foemove = foeMove();
         fMove = foemove;
         bool playerfirst = playerFirst();
         TextPanel.SetActive(true);
         int cHP = (int)pSlider.value;
         int fcHp = (int)slider.value;
-        FindObjectOfType<TurnSystem>().doStuff(active, foe, foemove, m, bText, playerfirst, cHP, fcHp);
+        FindObjectOfType<TurnSystem>().doStuff(pActive, fActive, foemove, m, bText, playerfirst, cHP, fcHp);
 
 
 
@@ -267,7 +262,7 @@ public class Battle : MonoBehaviour
         ActivePokemon = GameObject.FindGameObjectWithTag("Player");
         String pokemonName = ActivePokemon.transform.parent.tag;
         active = findMon(pokemonName, pokemon);
-
+        pActive.P = active;
         return active;
 
     }
