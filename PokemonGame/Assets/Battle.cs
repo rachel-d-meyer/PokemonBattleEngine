@@ -27,6 +27,7 @@ public class Battle : MonoBehaviour
     Pokemon pastActive;
     ActivePokemon pActive, fActive;
     List<int> foeOrder = new List<int>();
+    List<int> playerOrder = new List<int>();
     Move[] activeMoves = new Move[4];
     MoveList moveList = MoveList.GetMoveList();
     PokeDex dex = PokeDex.GetPokeDex();
@@ -75,8 +76,7 @@ public class Battle : MonoBehaviour
         switchPanel.SetActive(false);
         switchTextPanel.SetActive(false);
         foeChanged.SetActive(false);
-        active = findActive();
-        pActive.P = active;
+       
         List<Pokemon> pokemon = dex.GetPokemon;
         enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
         String enemyName = enemyPokemon.transform.parent.tag;
@@ -84,7 +84,7 @@ public class Battle : MonoBehaviour
         foe = findMon(enemyName, pokemon);
         fActive.P = foe;
        
-        updateMon();
+       
        
         foreach(Pokemon p in pokemon)
         {
@@ -95,14 +95,28 @@ public class Battle : MonoBehaviour
             }
 
         }
-        u1.text = playable[0].Name;
-        u2.text = playable[1].Name;
-        u3.text = playable[2].Name;
-        u4.text = playable[3].Name;
-        u5.text = playable[4].Name;
-        u6.text = playable[5].Name;
 
+        while (playerOrder.Count != 6)
+        {
+            int x = r.Next(playable.Count);
+            if (!playerOrder.Contains(x))
+            {
+                playerOrder.Add(x);
+            }
 
+        }
+        u1.text = playable[playerOrder[0]].Name;
+        u2.text = playable[playerOrder[1]].Name;
+        u3.text = playable[playerOrder[2]].Name;
+        u4.text = playable[playerOrder[3]].Name;
+        u5.text = playable[playerOrder[4]].Name;
+        u6.text = playable[playerOrder[5]].Name;
+
+        Debug.Log("Text"+u1.text);
+        setNewActive(playable[playerOrder[0]].Name);
+        active = findActive();
+        pActive.P = active;
+        updateMon();
         //Create list of playable Pokemon, choose 6.
         
         fFainted = 0;
@@ -121,16 +135,7 @@ public class Battle : MonoBehaviour
         updateScreen();
         //pcur.text = playerCurrent.ToString();
 
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            a.SetActive(false);
-            b.SetActive(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.K))
-        {
-            a.SetActive(true);
-            b.SetActive(false);
-        }
+       
 
         if (notifier.activeSelf)
         {
@@ -242,13 +247,15 @@ public class Battle : MonoBehaviour
     void damageStuff(Move m)
     {
         //pMove = m;
-        Debug.Log(m.Name);
         Move foemove = foeMove();
         fMove = foemove;
         bool playerfirst = playerFirst();
         TextPanel.SetActive(true);
         int cHP = (int)pSlider.value;
         int fcHp = (int)slider.value;
+
+        Debug.Log("Foe Move: " + foemove.Name);
+        Debug.Log("Move: " + m.Name);
         FindObjectOfType<TurnSystem>().doStuff(pActive, fActive, foemove, m, bText, playerfirst, cHP, fcHp);
 
 
@@ -522,6 +529,7 @@ setNewActive(u4.text);
 
     void setNewActive(String s)
     {
+        Debug.Log(s);
 
         s = s.ToUpper();
 

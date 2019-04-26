@@ -21,7 +21,7 @@ class MoveList
         _moves.Add(new Move(9, "Aqua Jet", "Water", 40,"First", "P")); //Phys effect
         _moves.Add(new Move(10, "Swift", "Normal", 60, "Damage", "S")); //Sp
         _moves.Add(new Move(11, "Giga Drain", "Grass", 75,"Drain", "S")); //Sp effect
-        _moves.Add(new Move(12,"Synthesis","null",0,"Heal","null")); //Restore health
+        _moves.Add(new Move(12,"Synthesis","Null",0,"Heal","null")); //Restore health
         _moves.Add(new Move(13, "Aura Sphere", "Fighting", 80, "Damage", "S")); //Sp
         _moves.Add(new Move(14, "Brick Break", "Fighting", 75, "Damage", "P")); //Phys
         _moves.Add(new Move(15, "Dragon Pulse", "Dragon", 85, "Damage", "S")); //SP
@@ -58,13 +58,13 @@ class MoveList
         _moves.Add(new Move(46, "Psychic", "Psychic", 90, "Damage", "S"));
         _moves.Add(new Move(47, "Calm Mind", "Null", 0, "SpAUpSpDUp", "null"));
         _moves.Add(new Move(48, "Magical Leaf", "Grass", 60, "Damage", "S"));
-        _moves.Add(new Move(49, "Light Screen", "Null", 0, "SPH5", "Null"));
-        _moves.Add(new Move(50, "Nasty Ploty", "Null", 0, "SpAUp2", "Null"));
+        _moves.Add(new Move(49, "Light Screen", "Null", 0, "SPH5", "null"));
+        _moves.Add(new Move(50, "Nasty Ploty", "Null", 0, "SpAUp2", "null"));
         _moves.Add(new Move(51, "Hyper Voice", "Normal", 90, "Damage", "S"));
         _moves.Add(new Move(52, "Hidden Power (Ghost)", "Ghost", 60, "Damage", "S"));
         _moves.Add(new Move(53, "Slash", "Normal", 70, "Damage", "P"));
         _moves.Add(new Move(54, "Waterfall", "Water", 80, "Damage", "P"));
-        _moves.Add(new Move(55, "Recover", "null", 0, "Heal", "Null"));
+        _moves.Add(new Move(55, "Recover", "Null", 0, "Heal", "Null"));
         _moves.Add(new Move(56, "Signal Beam", "Bug", 75, "Damage", "S"));
         _moves.Add(new Move(57, "Ice Punch", "Ice", 75, "Damage", "P"));
         _moves.Add(new Move(58, "Sludge Wave", "Poison", 95, "Damage", "S"));

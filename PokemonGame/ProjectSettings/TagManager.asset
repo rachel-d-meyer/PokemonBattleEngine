@@ -40,6 +40,10 @@ TagManager:
   - Tentacruel
   - Venusaur
   - Vulpix
+  - AtkMod
+  - DefMod
+  - SpAtkMod
+  - SpDefMod
   layers:
   - Default
   - TransparentFX
