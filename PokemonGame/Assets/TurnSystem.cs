@@ -198,8 +198,8 @@ public class TurnSystem : MonoBehaviour
             double typeD = 0;
             if (m.Attack.Equals("S"))
             {
-                Debug.Log("User Modifier: " + spaM);
-                Debug.Log("Foe Modifier: " + fspaM);
+                //Debug.Log("User Modifier: " + spaM);
+                //Debug.Log("Foe Modifier: " + fspaM);
                 if (First)
                 {
                 typeA = a.P.Stats[0].SpAtk*spaM;
@@ -214,8 +214,8 @@ public class TurnSystem : MonoBehaviour
             }
             else if (m.Attack.Equals("P"))
             {
-                Debug.Log("User Modifier: " + aM);
-                Debug.Log("Foe Modifier: " + faM);
+               // Debug.Log("User Modifier: " + aM);
+               // Debug.Log("Foe Modifier: " + faM);
                 if (First)
                 {
                 typeA = a.P.Stats[0].Atk*aM;
@@ -321,8 +321,8 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-                Debug.Log("Foe recovery test");
-                Debug.Log(fcHP);
+               // Debug.Log("Foe recovery test");
+              //  Debug.Log(fcHP);
                 fcHP = fcHP + (a.P.Stats[0].HP / 2);
                 Debug.Log(fcHP);
                 if (fcHP > a.P.Stats[0].HP)
@@ -336,10 +336,11 @@ public class TurnSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("Stat Move");
+            Debug.Log(First);
+          //  Debug.Log("Stat Move");
             if (m.Info.Equals("AUpDUp"))
         {
-                if (First)
+                if (a.Equals(pActive))
                 {
                     aM = modIncrease(aM, 1);
                     dM = modIncrease(dM, 1);
@@ -351,7 +352,7 @@ public class TurnSystem : MonoBehaviour
                 }
         }
         else if (m.Info.Equals("SpAUpSpDUp")){
-                if (First)
+                if (a.Equals(pActive))
                 {
                     spaM = modIncrease(spaM, 1);
                     spdM = modIncrease(spdM, 1);
@@ -364,7 +365,8 @@ public class TurnSystem : MonoBehaviour
             }
             else if (m.Info.Equals("SpAUp2"))
             {
-                if (First){
+              //  Debug.Log("Nasty Plot!");
+                if (a.Equals(pActive)){
                     spaM = modIncrease(spaM, 2);
                 }
                 else
@@ -372,12 +374,16 @@ public class TurnSystem : MonoBehaviour
                     fspaM = modIncrease(fspaM, 2);
 
                 }
+
             }
             else
             {
-                Debug.Log("Bleh");
+              //  Debug.Log("Bleh");
             }
-       
+            AMod.text = aM.ToString();
+            DMod.text = dM.ToString();
+            SaMod.text = spaM.ToString();
+            SdMod.text = spdM.ToString();
 
         }
         hpText.text = cHP.ToString();

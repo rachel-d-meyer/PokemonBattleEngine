@@ -13,7 +13,7 @@ public class Battle : MonoBehaviour
     List<Pokemon> deadPokemon = new List<Pokemon>();
     Dictionary<string, int> switchedPokemon = new Dictionary<string, int>();
     public List<Button> buttonColor;
-    public Text m1, m2, m3, m4, f1, p1, pcur, pmax, deadText,fText;
+    public Text m1, m2, m3, m4, f1, p1, pcur, pmax, deadText, fText, AMod, DMod, SaMod, SdMod;
     public Slider slider, pSlider;
     public battleText bText,foeText;
     public Text sText,spText;
@@ -319,6 +319,11 @@ public class Battle : MonoBehaviour
 
         if (players) {
             deadPokemon.Add(active);
+            //set mod to 1
+            AMod.text = "1";
+            DMod.text = "1";
+            SaMod.text = "1";
+            SdMod.text = "1";
             blockFainted();
         setSwitchText(fainted);
         }
@@ -353,7 +358,7 @@ public class Battle : MonoBehaviour
         {
             
             
-            foeText.sentences[0] = f.Name + "fainted...";
+            foeText.sentences[0] = f.Name + " fainted...";
             foeText.sentences[1] = "placeholder";
         foreach (string sentence in foeText.sentences)
             {
