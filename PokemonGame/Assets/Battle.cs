@@ -256,6 +256,7 @@ public class Battle : MonoBehaviour
 
         Debug.Log("Foe Move: " + foemove.Name);
         Debug.Log("Move: " + m.Name);
+        //FindObjectOfType<Agent>().agent();
         FindObjectOfType<TurnSystem>().doStuff(pActive, fActive, foemove, m, bText, playerfirst, cHP, fcHp);
 
 

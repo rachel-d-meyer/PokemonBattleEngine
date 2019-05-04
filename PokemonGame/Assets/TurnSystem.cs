@@ -25,6 +25,17 @@ public class TurnSystem : MonoBehaviour
 
     public void doStuff(ActivePokemon a, ActivePokemon f, Move fmove, Move pmove, battleText battletext, bool first, int cHp, int fcHp)
     {
+
+        double[] pStats= {cHp,aM,dM,spaM,spdM};
+        double[] fStats = {fcHp,faM,fdM,fspaM,spdM };
+       
+            var _instance = new Agent();
+            Move newmove=_instance.agent(a,f,pStats,fStats);
+           
+            //FindObjectOfType<testObject>().test();
+            Debug.Log("AI chosen move is: " + newmove.Name);
+        
+       
         fActive = f;
         pActive = a;
         b = battletext;
@@ -45,7 +56,7 @@ public class TurnSystem : MonoBehaviour
         if (!previousF.Equals(fActive))
         {
             faM = 1;
-            dM = 1;
+            fdM = 1;
             fspaM = 1;
             fspdM = 1;
         }
@@ -255,8 +266,12 @@ public class TurnSystem : MonoBehaviour
                 }
                 else if (m.Info.Equals("DDownSpDDown"))
                 {
+                    Debug.Log("Modd down from: " + dM);
+
                     dM = modDecrease(dM, 1);
+                   
                     spdM = modDecrease(spdM, 1);
+                   
                 }
 
                 fcHP = fcHP - damage;
@@ -324,19 +339,19 @@ public class TurnSystem : MonoBehaviour
                // Debug.Log("Foe recovery test");
               //  Debug.Log(fcHP);
                 fcHP = fcHP + (a.P.Stats[0].HP / 2);
-                Debug.Log(fcHP);
+               
                 if (fcHP > a.P.Stats[0].HP)
                 {
                     fcHP = a.P.Stats[0].HP;
                 }
-                Debug.Log(fcHP);
+                
                 fSlider.value = fcHP;
                 sliderUpdate(fSlider, fImage, a.P);
             }
         }
         else
         {
-            Debug.Log(First);
+            
           //  Debug.Log("Stat Move");
             if (m.Info.Equals("AUpDUp"))
         {
@@ -387,6 +402,8 @@ public class TurnSystem : MonoBehaviour
 
         }
         hpText.text = cHP.ToString();
+
+
 
         AMod.text = aM.ToString();
         DMod.text = dM.ToString();
@@ -820,76 +837,90 @@ public class TurnSystem : MonoBehaviour
 
     double modDecrease(double modd, int stages)
     {
-
+        double testint = modd;
+         //It's one here 
         do
         {
             if (modd > 1)
             {
-                modd = modd - 0.5;
+                testint = testint - 0.5;
+                //modd = modd - 0.5;
 
             }
-            else if (modd > 0.25 && modd <= 1)
+            else if (modd >= 0.25 && modd <= 1)
             {
-                modd = modDown(modd);
+                //It's one here
+               
+                 testint = modDown(modd);
+                
             }
 
             stages = stages - 1;
+           
         } while (stages != 0);
 
 
-        return modd;
+        return testint;
     }
 
     double modDown(double modd)
     {
-        if (modd == 2 / 3)
+
+        Debug.Log("Modd down from: " + modd);
+        if (modd == 0.67)
         {
-            modd = 2 / 4;
+            modd = 0.5;
         }
-        else if (modd == 2 / 4)
+        else if (modd == 0.5)
         {
-            modd = 2 / 5;
+            modd = 0.4;
         }
-        else if (modd == 2 / 5)
+        else if (modd == 0.4)
         {
-            modd = 2 / 6;
+            modd = 0.33;
         }
-        else if (modd == 2 / 6)
+        else if (modd == 0.33)
         {
-            modd = 2 / 7;
+            modd = 0.28;
         }
-        else if (modd == 2 / 7)
+        else if (modd == 0.28)
         {
-            modd = 2 / 8;
+            modd = 0.25;
         }
+        else if(modd == 1)
+        {
+            modd = 0.67;
+        }
+        Debug.Log("Set mod to: " + modd);
         return modd;
     }
 
     double modUp(double modd)
     {
-        if (modd == 2 / 3)
+       
+        if (modd == 0.67)
         {
             modd = 1;
         }
-        else if (modd == 2 / 4)
+        else if (modd == 0.5)
         {
-            modd = 2 / 3;
+            modd = 0.67;
         }
-        else if (modd == 2 / 5)
+        else if (modd == 0.4)
         {
-            modd = 2 / 4;
+            modd = 0.5;
         }
-        else if (modd == 2 / 6)
+        else if (modd == 0.33)
         {
-            modd = 2 / 5;
+            modd = 0.4 ;
         }
-        else if (modd == 2 / 7)
+        else if (modd == 0.28)
         {
-            modd = 2 / 6;
+            modd = 0.33;
         }
-        else if (modd == 2 / 8)
+        else if (modd == 0.25)
         {
-            modd = 2 / 7;
+            modd = 0.28;
         }
 
         return modd;
