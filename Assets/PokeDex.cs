@@ -16,18 +16,18 @@ class PokeDex
         Stats stats = Stats.GetStats();
         Dictionary<string, List<Stat>> statsFor = stats.GetStatList;
 
-        _pokemon.Add(new Pokemon("Bulbasaur","Grass",movesFor["Bulbasaur"],statsFor["Bulbasaur"],true));
-        _pokemon.Add(new Pokemon("Charmander", "Fire", movesFor["Charmander"], statsFor["Charmander"],false));
-        _pokemon.Add(new Pokemon("Marshtomp", "Water", movesFor["Marshtomp"], statsFor["Marshtomp"],false));
-        _pokemon.Add(new Pokemon("Arcanine", "Fire", movesFor["Arcanine"], statsFor["Arcanine"],false));
-        _pokemon.Add(new Pokemon("Buizel", "Water", movesFor["Buizel"], statsFor["Buizel"],false));
-        _pokemon.Add(new Pokemon("Turtwig", "Grass", movesFor["Turtwig"], statsFor["Turtwig"],true));
-        _pokemon.Add(new Pokemon("Lucario", "Fighting", movesFor["Lucario"], statsFor["Lucario"],true));
-        _pokemon.Add(new Pokemon("Squirtle", "Water", movesFor["Squirtle"], statsFor["Squirtle"],false));
-        _pokemon.Add(new Pokemon("Electrode", "Electric", movesFor["Electrode"], statsFor["Electrode"],true));
-        _pokemon.Add(new Pokemon("Rhyperior", "Rock", movesFor["Rhyperior"], statsFor["Rhyperior"],true));
-        _pokemon.Add(new Pokemon("Flygon", "Dragon", movesFor["Flygon"], statsFor["Flygon"],false));
-        _pokemon.Add(new Pokemon("Jolteon", "Electric", movesFor["Jolteon"], statsFor["Jolteon"],true));
+        _pokemon.Add(new Pokemon("Bulbasaur", "Grass", movesFor["Bulbasaur"], statsFor["Bulbasaur"], true));
+        _pokemon.Add(new Pokemon("Charmander", "Fire", movesFor["Charmander"], statsFor["Charmander"], false));
+        _pokemon.Add(new Pokemon("Marshtomp", "Water", movesFor["Marshtomp"], statsFor["Marshtomp"], false));
+        _pokemon.Add(new Pokemon("Arcanine", "Fire", movesFor["Arcanine"], statsFor["Arcanine"], false));
+        _pokemon.Add(new Pokemon("Buizel", "Water", movesFor["Buizel"], statsFor["Buizel"], false));
+        _pokemon.Add(new Pokemon("Turtwig", "Grass", movesFor["Turtwig"], statsFor["Turtwig"], true));
+        _pokemon.Add(new Pokemon("Lucario", "Fighting", movesFor["Lucario"], statsFor["Lucario"], true));
+        _pokemon.Add(new Pokemon("Squirtle", "Water", movesFor["Squirtle"], statsFor["Squirtle"], false));
+        _pokemon.Add(new Pokemon("Electrode", "Electric", movesFor["Electrode"], statsFor["Electrode"], true));
+        _pokemon.Add(new Pokemon("Rhyperior", "Rock", movesFor["Rhyperior"], statsFor["Rhyperior"], true));
+        _pokemon.Add(new Pokemon("Flygon", "Dragon", movesFor["Flygon"], statsFor["Flygon"], false));
+        _pokemon.Add(new Pokemon("Jolteon", "Electric", movesFor["Jolteon"], statsFor["Jolteon"], true));
         _pokemon.Add(new Pokemon("Blastoise", "Water", movesFor["Blastoise"], statsFor["Blastoise"], true));
         _pokemon.Add(new Pokemon("Charizard", "Fire", movesFor["Charizard"], statsFor["Charizard"], true));
         _pokemon.Add(new Pokemon("Hitmonchan", "Fighting", movesFor["Hitmonchan"], statsFor["Hitmonchan"], true));
@@ -48,13 +48,13 @@ class PokeDex
 
     public static PokeDex GetPokeDex()
     {
-        if(_instance == null)
+        if (_instance == null)
         {
             lock (syncLock)
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                   
+
                     _instance = new PokeDex();
                 }
             }

@@ -9,14 +9,15 @@ public class Battle : MonoBehaviour
     private Queue<string> sentences;
     public GameObject a, notifier;
     public GameObject b;
-    public List<GameObject> allMyPokemon,allFoePokemon;
+    public Button b1, b2, b3, b4, b5, b6;
+    public List<GameObject> allMyPokemon, allFoePokemon;
     List<Pokemon> deadPokemon = new List<Pokemon>();
     Dictionary<string, int> switchedPokemon = new Dictionary<string, int>();
     public List<Button> buttonColor;
     public Text m1, m2, m3, m4, f1, p1, pcur, pmax, deadText, fText, AMod, DMod, SaMod, SdMod;
     public Slider slider, pSlider;
-    public battleText bText,foeText;
-    public Text sText,spText;
+    public battleText bText, foeText;
+    public Text sText, spText;
     bool players;
     bool wasSwitched = true;
     bool checkFainted = true;
@@ -37,7 +38,7 @@ public class Battle : MonoBehaviour
     public Image fImage, pImage;
     public Text u1, u2, u3, u4, u5, u6;
     List<Pokemon> playable = new List<Pokemon>();
-    GameObject MovePanel, TextPanel, deadPanel, gameOverPanel,switchPanel,switchTextPanel,foeChanged;
+    GameObject MovePanel, TextPanel, deadPanel, gameOverPanel, switchPanel, switchTextPanel, foeChanged;
     List<Pokemon> faintedAgent = new List<Pokemon>();
     Pokemon next = new Pokemon();
     GameObject foeActiveObj;
@@ -49,7 +50,8 @@ public class Battle : MonoBehaviour
     public Dictionary<string, Texture> spriteList = new Dictionary<string, Texture>();
     int foeCurrent;
     int playerCurrent;
-    // Use this for initialization
+
+
     public void Start()
     {
         spriteSort sorty = new spriteSort();
@@ -60,7 +62,8 @@ public class Battle : MonoBehaviour
         faintCountF = 0;
         faintCountP = 0;
         System.Random r = new System.Random();
-        Debug.Log(allFoePokemon.Count);
+
+        //Randomise the agents Pokemon for this battle
         while (foeOrder.Count != 6)
         {
             int x = r.Next(allFoePokemon.Count);
@@ -71,7 +74,7 @@ public class Battle : MonoBehaviour
 
         }
 
-       
+
 
         allFoePokemon[foeOrder[0]].SetActive(true);
         MovePanel = GameObject.FindGameObjectWithTag("movePanel");
@@ -88,24 +91,19 @@ public class Battle : MonoBehaviour
         switchPanel.SetActive(false);
         switchTextPanel.SetActive(false);
         foeChanged.SetActive(false);
-       
+
         List<Pokemon> pokemon = dex.GetPokemon;
         enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
         String enemyName = enemyPokemon.transform.parent.tag;
-     
+
         foe = findMon(enemyName, pokemon);
         fActive.P = foe;
-       
-       
-       
-        foreach(Pokemon p in pokemon)
-        {
-            if (p.Playable)
-            {
-                playable.Add(p);
-                //switchedPokemon.add;
-            }
 
+
+        //Randomise the players 6 Pokemon dor this battle
+        foreach (Pokemon p in pokemon)
+        {
+            playable.Add(p);
         }
 
         while (playerOrder.Count != 6)
@@ -153,38 +151,42 @@ public class Battle : MonoBehaviour
             switch5.texture = spriteList[u6.text];
         }
 
-        Debug.Log("Text"+u1.text);
+        
         setNewActive(playable[playerOrder[0]].Name);
         active = findActive();
         pActive.P = active;
         updateMon();
-        //Create list of playable Pokemon, choose 6.
         
+
         fFainted = 0;
         pFainted = 0;
         updateScreen();
 
 
 
-        //charmander.Play();
+        
     }
 
     public void Restart()
     {
-        foreach(RawImage raw in agentBalls)
+        AMod.text = "1";
+        DMod.text = "1";
+        SaMod.text = "1";
+        SdMod.text = "1";
+        foreach (RawImage raw in agentBalls)
         {
             raw.texture = balls[1];
         }
-        foreach(RawImage raw in playerBalls)
+        foreach (RawImage raw in playerBalls)
         {
             raw.texture = balls[1];
         }
-        buttonColor[0].image.color = Color.white;
-        buttonColor[1].image.color = Color.white;
-        buttonColor[2].image.color = Color.white;
-        buttonColor[3].image.color = Color.white;
-        buttonColor[4].image.color = Color.white;
-        buttonColor[5].image.color = Color.white;
+        b1.GetComponent<RawImage>().color = Color.white;
+        b2.GetComponent<RawImage>().color = Color.white;
+        b3.GetComponent<RawImage>().color = Color.white;
+        b4.GetComponent<RawImage>().color = Color.white;
+        b5.GetComponent<RawImage>().color = Color.white;
+        b6.GetComponent<RawImage>().color = Color.white;
         wasSwitched = true;
         checkFainted = true;
         switchPanel.SetActive(false);
@@ -203,7 +205,7 @@ public class Battle : MonoBehaviour
         faintCountF = 0;
         faintCountP = 0;
         System.Random r = new System.Random();
-        Debug.Log(allFoePokemon.Count);
+        
         while (foeOrder.Count != 6)
         {
             int x = r.Next(allFoePokemon.Count);
@@ -231,6 +233,7 @@ public class Battle : MonoBehaviour
             }
 
         }
+
         u1.text = playable[playerOrder[0]].Name;
         u2.text = playable[playerOrder[1]].Name;
         u3.text = playable[playerOrder[2]].Name;
@@ -238,7 +241,36 @@ public class Battle : MonoBehaviour
         u5.text = playable[playerOrder[4]].Name;
         u6.text = playable[playerOrder[5]].Name;
 
-        Debug.Log("Text" + u1.text);
+        String pText = u1.text;
+        if (spriteList.ContainsKey(pText))
+        {
+            switch0.texture = spriteList[pText];
+        }
+
+        if (spriteList.ContainsKey(u2.text))
+        {
+            switch1.texture = spriteList[u2.text];
+        }
+
+        if (spriteList.ContainsKey(u3.text))
+        {
+            switch2.texture = spriteList[u3.text];
+        }
+
+        if (spriteList.ContainsKey(u4.text))
+        {
+            switch3.texture = spriteList[u4.text];
+        }
+        if (spriteList.ContainsKey(u5.text))
+        {
+            switch4.texture = spriteList[u5.text];
+        }
+        if (spriteList.ContainsKey(u6.text))
+        {
+            switch5.texture = spriteList[u6.text];
+        }
+
+        // Debug.Log("Text" + u1.text);
         setNewActive(playable[playerOrder[0]].Name);
         active = findActive();
         pActive.P = active;
@@ -256,7 +288,7 @@ public class Battle : MonoBehaviour
         updateScreen();
         //pcur.text = playerCurrent.ToString();
 
-       
+
 
         if (notifier.activeSelf)
         {
@@ -306,7 +338,7 @@ public class Battle : MonoBehaviour
         if (wasSwitched)
         {
             enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
-           
+
             String enemyName = enemyPokemon.transform.parent.tag;
             foe = findMon(enemyName, pokemon);
             f1.text = foe.Name;
@@ -322,7 +354,7 @@ public class Battle : MonoBehaviour
 
 
     Pokemon findMon(String s, List<Pokemon> list)
-    { 
+    {
 
         foreach (Pokemon p in list)
         {
@@ -363,7 +395,7 @@ public class Battle : MonoBehaviour
         damageStuff(used);
     }
 
- 
+
 
     void damageStuff(Move m)
     {
@@ -375,8 +407,8 @@ public class Battle : MonoBehaviour
         int cHP = (int)pSlider.value;
         int fcHp = (int)slider.value;
 
-        Debug.Log("Foe Move: " + foemove.Name);
-        Debug.Log("Move: " + m.Name);
+        // Debug.Log("Foe Move: " + foemove.Name);
+        // Debug.Log("Move: " + m.Name);
         FindObjectOfType<TurnSystem>().doStuff(pActive, fActive, foemove, m, bText, playerfirst, cHP, fcHp);
 
 
@@ -438,7 +470,8 @@ public class Battle : MonoBehaviour
     void pokemonFainted(Pokemon fainted)
     {
         List<Pokemon> pokedex = dex.GetPokemon;
-        if (players) {
+        if (players)
+        {
             deadPokemon.Add(active);
             //set mod to 1
             AMod.text = "1";
@@ -447,29 +480,30 @@ public class Battle : MonoBehaviour
             SdMod.text = "1";
             GameObject playerPokemon = GameObject.FindGameObjectWithTag("Player");
             GameObject pP = playerPokemon.transform.parent.gameObject;
-            Debug.Log(pP.tag);
+            //Debug.Log(pP.tag);
             int i = playable.IndexOf(fainted);
-            Debug.Log(i);
+            // Debug.Log(i);
             int x = playerOrder.IndexOf(i);
-            Debug.Log(x);
+            // Debug.Log(x);
             playerBalls[x].texture = balls[0];
             blockFainted();
-        setSwitchText(fainted);
+            setSwitchText(fainted);
         }
-        else {
+        else
+        {
             enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
             GameObject gP = enemyPokemon.transform.parent.gameObject;
-            Debug.Log(gP.tag);
+            //Debug.Log(gP.tag);
             int i = allFoePokemon.IndexOf(gP);
-            Debug.Log(i);
-          
+            // Debug.Log(i);
+
             int x = foeOrder.IndexOf(i);
-            Debug.Log(x);
+            // Debug.Log(x);
             agentBalls[x].texture = balls[0];
 
             foeFaint(fainted);
 
-}
+        }
 
     }
 
@@ -489,27 +523,29 @@ public class Battle : MonoBehaviour
     }
     public void setSwitchText(Pokemon f)
     {
-        
-         pFainted = pFainted + 1;
+
+        pFainted = pFainted + 1;
 
         deadText.text = f.Name + " fainted...";
-        if(pFainted == 6)
+        if (pFainted == 6)
         {
-            
-            
+
+
             foeText.sentences[0] = f.Name + " fainted...";
             foeText.sentences[1] = "placeholder";
-        foreach (string sentence in foeText.sentences)
+            foreach (string sentence in foeText.sentences)
             {
                 sentences.Enqueue(sentence);
             }
             foeChanged.SetActive(true);
             displayNext();
         }
-        else { 
-        switchPanel.SetActive(true); 
-        deadPanel.SetActive(true);}
-  
+        else
+        {
+            switchPanel.SetActive(true);
+            deadPanel.SetActive(true);
+        }
+
     }
     public void foeFaint(Pokemon f)
     {
@@ -517,32 +553,33 @@ public class Battle : MonoBehaviour
         fFainted = fFainted + 1;
         faintedAgent.Add(f);
         //call up an instance of agent.chooseNext, 
-        foeText.sentences[0] = f.Name+ " fainted...";
+        foeText.sentences[0] = f.Name + " fainted...";
         List<Pokemon> pokemon = dex.GetPokemon;
-        
-        if(fFainted < 6) {
+
+        if (fFainted < 6)
+        {
             //Change what next is. 
-        Agent agent = new Agent();
+            Agent agent = new Agent();
             Pokemon test = agent.chooseNext(faintedAgent, allFoePokemon, foeOrder, pokemon, active);
-            Debug.Log(test.Name);
+            // Debug.Log(test.Name);
             // Pokemon newOne = agent.chooseNext(faintedAgent, allFoePokemon, foeOrder, pokemon, active);
             next = findMon(test.Name, pokemon);
-            foreach(GameObject g in allFoePokemon)
+            foreach (GameObject g in allFoePokemon)
             {
                 if (g.tag.Equals(next.Name))
                 {
-                    Debug.Log(g.tag);
+                    //  Debug.Log(g.tag);
                     foeActiveObj = g;
                 }
             }
-            Debug.Log(next.Name);
-        foeText.sentences[1] = "Foe sends out " + next.Name;
+            // Debug.Log(next.Name);
+            foeText.sentences[1] = "Foe sends out " + next.Name;
         }
         else
         {
-            foeText.sentences[1] = "placeholder " ;
+            foeText.sentences[1] = "placeholder ";
         }
-        foreach(string sentence in foeText.sentences)
+        foreach (string sentence in foeText.sentences)
         {
             sentences.Enqueue(sentence);
         }
@@ -554,26 +591,26 @@ public class Battle : MonoBehaviour
     }
     public void displayNext()
     {
-        if (sentences.Count == 1&&fFainted==6||sentences.Count==1&&pFainted==6)
+        if (sentences.Count == 1 && fFainted == 6 || sentences.Count == 1 && pFainted == 6)
         {
             gameOverPanel.SetActive(true);
-            
+
 
             return;
         }
-       if(sentences.Count == 0)
+        if (sentences.Count == 0)
         {
             foeChanged.SetActive(false);
             return;
         }
-       else if (sentences.Count == 1)
+        else if (sentences.Count == 1)
         {
             foeActiveObj.SetActive(true);
             wasSwitched = true;
             checkFainted = true;
         }
         string sentence = sentences.Dequeue();
-        
+
         fText.text = sentence;
 
     }
@@ -584,8 +621,8 @@ public class Battle : MonoBehaviour
     }
     public void onClickU2()
     {
-        bool setActive=true;
-        foreach(Pokemon p in deadPokemon)
+        bool setActive = true;
+        foreach (Pokemon p in deadPokemon)
         {
             if (p.Name == u2.text)
             {
@@ -593,12 +630,13 @@ public class Battle : MonoBehaviour
                 break;
             }
         }
-        if (setActive) {
-        String newActive = u2.text;
-        
-        setNewActive(newActive);
-        switching();
-         }
+        if (setActive)
+        {
+            String newActive = u2.text;
+
+            setNewActive(newActive);
+            switching();
+        }
     }
     public void onClickU3()
     {
@@ -613,10 +651,10 @@ public class Battle : MonoBehaviour
         }
         if (setActive)
         {
-setNewActive(u3.text);
-        switching();
+            setNewActive(u3.text);
+            switching();
         }
-        
+
     }
     public void onClickU4()
     {
@@ -632,10 +670,10 @@ setNewActive(u3.text);
 
         if (setActive)
         {
-setNewActive(u4.text);
-        switching();
+            setNewActive(u4.text);
+            switching();
         }
-        
+
     }
     public void onClickU5()
     {
@@ -650,10 +688,10 @@ setNewActive(u4.text);
         }
         if (setActive)
         {
-        setNewActive(u5.text);
-        switching();
+            setNewActive(u5.text);
+            switching();
         }
-       
+
     }
     public void onClickU6()
     {
@@ -668,10 +706,10 @@ setNewActive(u4.text);
         }
         if (setActive)
         {
-        setNewActive(u6.text);
-        switching();
+            setNewActive(u6.text);
+            switching();
         }
-       
+
     }
     void switching()
     {
@@ -691,13 +729,13 @@ setNewActive(u4.text);
 
     void setNewActive(String s)
     {
-        Debug.Log(s);
+        // Debug.Log(s);
 
         s = s.ToUpper();
 
-        foreach(GameObject g in allMyPokemon)
+        foreach (GameObject g in allMyPokemon)
         {
-           
+
             if (g.name.ToUpper().Contains(s))
             {
                 g.SetActive(true);
@@ -705,42 +743,43 @@ setNewActive(u4.text);
             }
         }
 
-  
-    
+
+
     }
-    
+
 
     void blockFainted()
     {
-        foreach(Pokemon p in deadPokemon)
+        foreach (Pokemon p in deadPokemon)
         {
             if (p.Name == u1.text)
             {
-                buttonColor[0].image.color = Color.red;
+                b1.GetComponent<RawImage>().color = Color.gray;
+
             }
-            if(p.Name == u2.text)
+            if (p.Name == u2.text)
             {
-                buttonColor[1].image.color = Color.red;
+                b2.GetComponent<RawImage>().color = Color.gray;
             }
-            if(p.Name == u3.text)
+            if (p.Name == u3.text)
             {
-                buttonColor[2].image.color = Color.red;
+                b3.GetComponent<RawImage>().color = Color.gray;
             }
-            if(p.Name == u4.text)
+            if (p.Name == u4.text)
             {
-                buttonColor[3].image.color = Color.red;
+                b4.GetComponent<RawImage>().color = Color.gray;
             }
-            if(p.Name == u5.text)
+            if (p.Name == u5.text)
             {
-                buttonColor[4].image.color = Color.red;
+                b5.GetComponent<RawImage>().color = Color.gray;
             }
-            if(p.Name == u6.text)
+            if (p.Name == u6.text)
             {
-                buttonColor[5].image.color = Color.red;
+                b6.GetComponent<RawImage>().color = Color.gray;
             }
         }
 
-       
+
     }
     public void onClickRestart()
     {

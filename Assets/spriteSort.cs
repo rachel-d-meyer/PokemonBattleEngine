@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class spriteSort : MonoBehaviour {
+public class spriteSort : MonoBehaviour
+{
 
     public Dictionary<string, Texture> listCreator(List<Texture> sprites)
     {
         Dictionary<string, Texture> spriteStuff = new Dictionary<string, Texture>();
-        foreach(Texture t in sprites)
+        foreach (Texture t in sprites)
         {
             if (t.name.Equals("001"))
             {
@@ -122,5 +123,5 @@ public class spriteSort : MonoBehaviour {
 
 
         return spriteStuff;
-    } 
+    }
 }

@@ -1,4 +1,4 @@
 sceneSetups:
-- path: C:/Users/rachel.meyer/Desktop/Pokemon/PokemonGame/Assets/Scenes/SampleScene.unity
+- path: Assets/PokemonScene.unity
   isLoaded: 1
   isActive: 1

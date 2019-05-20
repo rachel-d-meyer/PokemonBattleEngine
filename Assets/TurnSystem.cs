@@ -15,7 +15,7 @@ public class TurnSystem : MonoBehaviour
     ActivePokemon fActive, pActive;
     Pokemon player, foe;
     int cHP, fcHP;
-    double aM =1 , dM= 1, spaM =1, spdM = 1, faM =1, fdM =1 , fspaM =1, fspdM =1;
+    double aM = 1, dM = 1, spaM = 1, spdM = 1, faM = 1, fdM = 1, fspaM = 1, fspdM = 1;
     Move pMove, fMove;
     bool First;
     battleText b;
@@ -34,8 +34,8 @@ public class TurnSystem : MonoBehaviour
         fcHP = fcHp;
         pMove = pmove;
 
-        
-       
+
+
         First = first;
         if (!previousA.Equals(pActive))
         {
@@ -47,24 +47,27 @@ public class TurnSystem : MonoBehaviour
         if (!previousF.Equals(fActive))
         {
             faM = 1;
-            dM = 1;
+            fdM = 1;
             fspaM = 1;
             fspdM = 1;
         }
         double[] pstats = { cHP, aM, dM, spaM, spdM };
         double[] fstats = { fcHP, faM, fdM, fspaM, fspdM };
         Agent _Agent = new Agent();
-        Move m=_Agent.agent(a, f, pstats, fstats);
+        Move m = _Agent.agent(a, f, pstats, fstats);
         fMove = m;
         fmove = m;
-       // Debug.Log(fMove.Name);
-       // Debug.Log("Chosen Move ===" + m.Name);
+        Debug.Log(fmove.Name);
+        Debug.Log(pmove.Name);
+        // Debug.Log(fMove.Name);
+        // Debug.Log("Chosen Move ===" + m.Name);
         AMod.text = aM.ToString();
         DMod.text = dM.ToString();
         SaMod.text = spaM.ToString();
         SdMod.text = spdM.ToString();
         sentences = new Queue<string>();
-
+        Debug.Log(pmove.Info.Equals("First"));
+        Debug.Log(fmove.Info.Equals("First"));
         if (fcHP > 0 && cHP > 0)
         {
             if (pmove.Info.Equals("First") && !(fmove.Info.Equals("First")))
@@ -211,31 +214,31 @@ public class TurnSystem : MonoBehaviour
                 //Debug.Log("Foe Modifier: " + fspaM);
                 if (First)
                 {
-                typeA = a.P.Stats[0].SpAtk*spaM;
-                typeD = d.P.Stats[0].SpDef*fspdM;
+                    typeA = a.P.Stats[0].SpAtk * spaM;
+                    typeD = d.P.Stats[0].SpDef * fspdM;
                 }
                 else
                 {
                     typeA = a.P.Stats[0].SpAtk * fspaM;
                     typeD = d.P.Stats[0].SpDef * spdM;
                 }
-               
+
             }
             else if (m.Attack.Equals("P"))
             {
-               // Debug.Log("User Modifier: " + aM);
-               // Debug.Log("Foe Modifier: " + faM);
+                // Debug.Log("User Modifier: " + aM);
+                // Debug.Log("Foe Modifier: " + faM);
                 if (First)
                 {
-                typeA = a.P.Stats[0].Atk*aM;
-                typeD = d.P.Stats[0].Def*fdM;
+                    typeA = a.P.Stats[0].Atk * aM;
+                    typeD = d.P.Stats[0].Def * fdM;
                 }
                 else
                 {
                     typeA = a.P.Stats[0].Atk * faM;
                     typeD = d.P.Stats[0].Def * dM;
                 }
-                
+
             }
             double dam = ((((((2 * 50) / 5) + 2) * m.Power * typeA / typeD) / 50) + 2) * mod;
             int damage = (int)dam;
@@ -266,7 +269,7 @@ public class TurnSystem : MonoBehaviour
                 {
                     dM = modDecrease(dM, 1);
                     spdM = modDecrease(spdM, 1);
-                    Debug.Log(dM + "," + spdM);
+                    //Debug.Log(dM + "," + spdM);
                 }
 
                 fcHP = fcHP - damage;
@@ -295,7 +298,7 @@ public class TurnSystem : MonoBehaviour
                 }
                 else if (m.Info.Equals("AUp"))
                 {
-                    faM = modIncrease(faM,1);
+                    faM = modIncrease(faM, 1);
                 }
                 else if (m.Info.Equals("DDownSpDDown"))
                 {
@@ -331,15 +334,15 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-               // Debug.Log("Foe recovery test");
-              //  Debug.Log(fcHP);
+                // Debug.Log("Foe recovery test");
+                //  Debug.Log(fcHP);
                 fcHP = fcHP + (a.P.Stats[0].HP / 2);
-               // Debug.Log(fcHP);
+                // Debug.Log(fcHP);
                 if (fcHP > a.P.Stats[0].HP)
                 {
                     fcHP = a.P.Stats[0].HP;
                 }
-               // Debug.Log(fcHP);
+                // Debug.Log(fcHP);
                 fSlider.value = fcHP;
                 sliderUpdate(fSlider, fImage, a.P);
             }
@@ -347,9 +350,9 @@ public class TurnSystem : MonoBehaviour
         else
         {
             //Debug.Log(First);
-          //  Debug.Log("Stat Move");
+            //  Debug.Log("Stat Move");
             if (m.Info.Equals("AUpDUp"))
-        {
+            {
                 if (a.Equals(pActive))
                 {
                     aM = modIncrease(aM, 1);
@@ -360,8 +363,9 @@ public class TurnSystem : MonoBehaviour
                     faM = modIncrease(faM, 1);
                     fdM = modIncrease(fdM, 1);
                 }
-        }
-        else if (m.Info.Equals("SpAUpSpDUp")){
+            }
+            else if (m.Info.Equals("SpAUpSpDUp"))
+            {
                 if (a.Equals(pActive))
                 {
                     spaM = modIncrease(spaM, 1);
@@ -375,8 +379,9 @@ public class TurnSystem : MonoBehaviour
             }
             else if (m.Info.Equals("SpAUp2"))
             {
-              //  Debug.Log("Nasty Plot!");
-                if (a.Equals(pActive)){
+                //  Debug.Log("Nasty Plot!");
+                if (a.Equals(pActive))
+                {
                     spaM = modIncrease(spaM, 2);
                 }
                 else
@@ -388,7 +393,7 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-              //  Debug.Log("Bleh");
+                //  Debug.Log("Bleh");
             }
             AMod.text = aM.ToString();
             DMod.text = dM.ToString();
@@ -830,6 +835,7 @@ public class TurnSystem : MonoBehaviour
 
     double modDecrease(double modd, int stages)
     {
+        // Debug.Log("Decreasing from "+modd);
 
         do
         {
@@ -840,24 +846,28 @@ public class TurnSystem : MonoBehaviour
             }
             else if (modd > 0.25 && modd <= 1)
             {
+                // Debug.Log("Standard decrease");
                 modd = modDown(modd);
+                //  Debug.Log("Returned Value: " + modd);
             }
 
             stages = stages - 1;
         } while (stages != 0);
 
-        Debug.Log(modd);
+        // Debug.Log(modd);
         return modd;
     }
 
     double modDown(double modd)
     {
-        Debug.Log("Down");
+        // Debug.Log("Down");
+        // Debug.Log(modd);
+
         if (modd == 0.67)
         {
             modd = 0.5;
         }
-        else if(modd == 1)
+        else if (modd == 1)
         {
             modd = 0.67;
         }
@@ -877,6 +887,7 @@ public class TurnSystem : MonoBehaviour
         {
             modd = 0.27;
         }
+        // Debug.Log(modd);
         return modd;
     }
 
@@ -900,7 +911,7 @@ public class TurnSystem : MonoBehaviour
         }
         else if (modd == 0.3)
         {
-            modd =0.33;
+            modd = 0.33;
         }
         else if (modd == 0.27)
         {
