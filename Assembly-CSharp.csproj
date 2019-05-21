@@ -77,6 +77,7 @@
     <Compile Include="Assets\statArray.cs" />
     <Compile Include="Assets\Stats.cs" />
     <Compile Include="Assets\TurnSystem.cs" />
+    <Compile Include="Assets\TypeCheck.cs" />
     <None Include="Assets\laxer Assets\creek\Shaders\RunningWater.shader" />
     <None Include="Assets\laxer Assets\creek\Shaders\RunningWaterSimple.shader" />
     <None Include="Assets\laxer Assets\creek\Shaders\HeightBlendx5.shader" />
