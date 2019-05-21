@@ -54,13 +54,17 @@ public class Battle : MonoBehaviour
 
     public void Start()
     {
+        //Create a list of sprites used to populate the buttons for switching Pokemon.
         spriteSort sorty = new spriteSort();
         spriteList = sorty.listCreator(sprites);
-        foeOrder.Clear();
+
+        //Denote who is the player, and who is the agent.
         fActive.Player = false;
         pActive.Player = true;
+
         faintCountF = 0;
         faintCountP = 0;
+
         System.Random r = new System.Random();
 
         //Randomise the agents Pokemon for this battle
@@ -74,9 +78,10 @@ public class Battle : MonoBehaviour
 
         }
 
-
-
+        //Set the agents first Pokemon as active.
         allFoePokemon[foeOrder[0]].SetActive(true);
+
+        //Find all panels, set them inactive.
         MovePanel = GameObject.FindGameObjectWithTag("movePanel");
         TextPanel = GameObject.FindGameObjectWithTag("textPanel");
         deadPanel = GameObject.FindGameObjectWithTag("deadPanel");
@@ -92,6 +97,7 @@ public class Battle : MonoBehaviour
         switchTextPanel.SetActive(false);
         foeChanged.SetActive(false);
 
+        //Pull up the full Pokedex, find which Pokemon the foe is.
         List<Pokemon> pokemon = dex.GetPokemon;
         enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
         String enemyName = enemyPokemon.transform.parent.tag;
@@ -115,6 +121,8 @@ public class Battle : MonoBehaviour
             }
 
         }
+
+        //Set the name of each Pokemon to the corresponding switch button.
         u1.text = playable[playerOrder[0]].Name;
         u2.text = playable[playerOrder[1]].Name;
         u3.text = playable[playerOrder[2]].Name;
@@ -123,6 +131,7 @@ public class Battle : MonoBehaviour
         u6.text = playable[playerOrder[5]].Name;
 
         String pText = u1.text;
+        //Set the mini-sprite of each Pokemon to the corresponding switch button.
         if (spriteList.ContainsKey(pText))
         {
             switch0.texture = spriteList[pText];
@@ -151,7 +160,7 @@ public class Battle : MonoBehaviour
             switch5.texture = spriteList[u6.text];
         }
 
-        
+        //Set the players first Pokemon to active
         setNewActive(playable[playerOrder[0]].Name);
         active = findActive();
         pActive.P = active;
@@ -161,18 +170,17 @@ public class Battle : MonoBehaviour
         fFainted = 0;
         pFainted = 0;
         updateScreen();
-
-
-
-        
     }
 
+
+    //If the battle is restarted, reset all values to default.
     public void Restart()
     {
         AMod.text = "1";
         DMod.text = "1";
         SaMod.text = "1";
         SdMod.text = "1";
+
         foreach (RawImage raw in agentBalls)
         {
             raw.texture = balls[1];
@@ -181,18 +189,23 @@ public class Battle : MonoBehaviour
         {
             raw.texture = balls[1];
         }
+
         b1.GetComponent<RawImage>().color = Color.white;
         b2.GetComponent<RawImage>().color = Color.white;
         b3.GetComponent<RawImage>().color = Color.white;
         b4.GetComponent<RawImage>().color = Color.white;
         b5.GetComponent<RawImage>().color = Color.white;
         b6.GetComponent<RawImage>().color = Color.white;
+
         wasSwitched = true;
         checkFainted = true;
+
         switchPanel.SetActive(false);
         deadPanel.SetActive(false);
         gameOverPanel.SetActive(false);
         foeChanged.SetActive(false);
+        gameOverPanel.SetActive(false);
+
         GameObject turnOff = enemyPokemon.transform.parent.gameObject;
         turnOff.SetActive(false);
         turnOff = ActivePokemon.transform.parent.gameObject;
@@ -200,10 +213,10 @@ public class Battle : MonoBehaviour
 
         deadPokemon.Clear();
         faintedAgent.Clear();
-        gameOverPanel.SetActive(false);
         foeOrder.Clear();
         faintCountF = 0;
         faintCountP = 0;
+
         System.Random r = new System.Random();
         
         while (foeOrder.Count != 6)
@@ -270,26 +283,23 @@ public class Battle : MonoBehaviour
             switch5.texture = spriteList[u6.text];
         }
 
-        // Debug.Log("Text" + u1.text);
         setNewActive(playable[playerOrder[0]].Name);
         active = findActive();
         pActive.P = active;
         updateMon();
-        //Create list of playable Pokemon, choose 6.
 
         fFainted = 0;
         pFainted = 0;
         updateScreen();
     }
-    // Update is called once per frame
+
+
     void Update()
     {
 
         updateScreen();
-        //pcur.text = playerCurrent.ToString();
 
-
-
+        //Check if any Pokemon have fainted since last turn.
         if (notifier.activeSelf)
         {
             notifier.SetActive(false);
@@ -313,12 +323,11 @@ public class Battle : MonoBehaviour
         }
     }
 
+
+    //Update the UI
     void updateScreen()
     {
         List<Pokemon> pokemon = dex.GetPokemon;
-
-        //active = findActive();
-
 
         int count = 0;
         foreach (Move m in active.Moves)
@@ -353,6 +362,7 @@ public class Battle : MonoBehaviour
     }
 
 
+    //Find a reference to a Pokemon from its name.
     Pokemon findMon(String s, List<Pokemon> list)
     {
 
@@ -369,12 +379,12 @@ public class Battle : MonoBehaviour
 
     }
 
+
+    //Buttons M1-M4 denote each move of the Players Pokemon.
     public void onClickM1()
     {
-
         Move used = activeMoves[0];
         damageStuff(used);
-
     }
 
     public void onClickM2()
@@ -396,10 +406,9 @@ public class Battle : MonoBehaviour
     }
 
 
-
+    //Updates values relating to each Pokemon and sends them through to the Turn System to Calculate how the battle progresses.
     void damageStuff(Move m)
     {
-        //pMove = m;
         Move foemove = foeMove();
         fMove = foemove;
         bool playerfirst = playerFirst();
@@ -407,14 +416,12 @@ public class Battle : MonoBehaviour
         int cHP = (int)pSlider.value;
         int fcHp = (int)slider.value;
 
-        // Debug.Log("Foe Move: " + foemove.Name);
-        // Debug.Log("Move: " + m.Name);
         FindObjectOfType<TurnSystem>().doStuff(pActive, fActive, foemove, m, bText, playerfirst, cHP, fcHp);
-
-
 
     }
 
+
+    //Find a reference to the players current Pokemon.
     Pokemon findActive()
     {
         List<Pokemon> pokemon = dex.GetPokemon;
@@ -424,21 +431,19 @@ public class Battle : MonoBehaviour
         active = findMon(pokemonName, pokemon);
         pActive.P = active;
         return active;
-
     }
 
+
+    //TODO: This is no longer needed, update code to reflect that.
     Move foeMove()
     {
-
         System.Random r = new System.Random();
-
         int x = r.Next(4);
-
-
-
         return foe.Moves[x];
     }
 
+
+    //Checks which Pokemon is faster, if a speed tie occurs, randomise who is fastest for this round.
     bool playerFirst()
     {
         if (active.Stats[0].Spd > foe.Stats[0].Spd)
@@ -467,24 +472,22 @@ public class Battle : MonoBehaviour
 
     }
 
+
+    //Update UI to reflect the fact the Pokemon has fainted.
     void pokemonFainted(Pokemon fainted)
     {
         List<Pokemon> pokedex = dex.GetPokemon;
         if (players)
         {
             deadPokemon.Add(active);
-            //set mod to 1
             AMod.text = "1";
             DMod.text = "1";
             SaMod.text = "1";
             SdMod.text = "1";
             GameObject playerPokemon = GameObject.FindGameObjectWithTag("Player");
             GameObject pP = playerPokemon.transform.parent.gameObject;
-            //Debug.Log(pP.tag);
             int i = playable.IndexOf(fainted);
-            // Debug.Log(i);
             int x = playerOrder.IndexOf(i);
-            // Debug.Log(x);
             playerBalls[x].texture = balls[0];
             blockFainted();
             setSwitchText(fainted);
@@ -493,14 +496,9 @@ public class Battle : MonoBehaviour
         {
             enemyPokemon = GameObject.FindGameObjectWithTag("Foe");
             GameObject gP = enemyPokemon.transform.parent.gameObject;
-            //Debug.Log(gP.tag);
             int i = allFoePokemon.IndexOf(gP);
-            // Debug.Log(i);
-
             int x = foeOrder.IndexOf(i);
-            // Debug.Log(x);
             agentBalls[x].texture = balls[0];
-
             foeFaint(fainted);
 
         }
@@ -508,7 +506,7 @@ public class Battle : MonoBehaviour
     }
 
 
-
+    //Update the UI to show the newly sent out Pokemon.
     void updateMon()
     {
         pImage.color = Color.green;
@@ -521,6 +519,9 @@ public class Battle : MonoBehaviour
         pSlider.maxValue = playerCurrent;
         pSlider.value = playerCurrent;
     }
+
+
+    //Update dialogue.
     public void setSwitchText(Pokemon f)
     {
 
@@ -547,32 +548,29 @@ public class Battle : MonoBehaviour
         }
 
     }
+
+
+    //Agent chooses which Pokemon it should send out next. UI updates.
     public void foeFaint(Pokemon f)
     {
         sentences = new Queue<string>();
         fFainted = fFainted + 1;
         faintedAgent.Add(f);
-        //call up an instance of agent.chooseNext, 
         foeText.sentences[0] = f.Name + " fainted...";
         List<Pokemon> pokemon = dex.GetPokemon;
 
         if (fFainted < 6)
         {
-            //Change what next is. 
             Agent agent = new Agent();
             Pokemon test = agent.chooseNext(faintedAgent, allFoePokemon, foeOrder, pokemon, active);
-            // Debug.Log(test.Name);
-            // Pokemon newOne = agent.chooseNext(faintedAgent, allFoePokemon, foeOrder, pokemon, active);
             next = findMon(test.Name, pokemon);
             foreach (GameObject g in allFoePokemon)
             {
                 if (g.tag.Equals(next.Name))
                 {
-                    //  Debug.Log(g.tag);
                     foeActiveObj = g;
                 }
             }
-            // Debug.Log(next.Name);
             foeText.sentences[1] = "Foe sends out " + next.Name;
         }
         else
@@ -589,6 +587,9 @@ public class Battle : MonoBehaviour
         displayNext();
 
     }
+
+
+    //Dialogue manager.
     public void displayNext()
     {
         if (sentences.Count == 1 && fFainted == 6 || sentences.Count == 1 && pFainted == 6)
@@ -615,10 +616,7 @@ public class Battle : MonoBehaviour
 
     }
 
-    public void onClickU1()
-    {
-
-    }
+    //Buttons U2-U6 handle the player switching Pokemon.
     public void onClickU2()
     {
         bool setActive = true;
@@ -638,6 +636,7 @@ public class Battle : MonoBehaviour
             switching();
         }
     }
+
     public void onClickU3()
     {
         bool setActive = true;
@@ -656,6 +655,7 @@ public class Battle : MonoBehaviour
         }
 
     }
+
     public void onClickU4()
     {
         bool setActive = true;
@@ -675,6 +675,7 @@ public class Battle : MonoBehaviour
         }
 
     }
+
     public void onClickU5()
     {
         bool setActive = true;
@@ -693,6 +694,7 @@ public class Battle : MonoBehaviour
         }
 
     }
+
     public void onClickU6()
     {
         bool setActive = true;
@@ -711,6 +713,8 @@ public class Battle : MonoBehaviour
         }
 
     }
+    
+
     void switching()
     {
         GameObject turnOff = ActivePokemon.transform.parent.gameObject;
@@ -722,14 +726,15 @@ public class Battle : MonoBehaviour
         checkFainted = true;
     }
 
+
     public void spOnClick()
     {
         switchTextPanel.SetActive(false);
     }
 
+
     void setNewActive(String s)
     {
-        // Debug.Log(s);
 
         s = s.ToUpper();
 
@@ -742,12 +747,10 @@ public class Battle : MonoBehaviour
                 return;
             }
         }
-
-
-
     }
 
 
+    //Gray out images of fainted Pokemon.
     void blockFainted()
     {
         foreach (Pokemon p in deadPokemon)
@@ -778,9 +781,9 @@ public class Battle : MonoBehaviour
                 b6.GetComponent<RawImage>().color = Color.gray;
             }
         }
-
-
     }
+
+
     public void onClickRestart()
     {
 
