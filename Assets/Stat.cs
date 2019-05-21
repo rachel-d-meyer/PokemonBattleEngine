@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
 public struct Stat {
     public int HP, Atk, Def, SpAtk, SpDef, Spd;

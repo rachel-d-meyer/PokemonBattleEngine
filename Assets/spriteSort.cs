@@ -12,7 +12,6 @@ public class spriteSort : MonoBehaviour
         {
             if (t.name.Equals("001"))
             {
-                Debug.Log("Bulbasaur");
                 spriteStuff.Add("Bulbasaur", t);
             }
             else if (t.name.Equals("003"))
