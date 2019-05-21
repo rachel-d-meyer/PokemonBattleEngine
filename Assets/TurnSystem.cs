@@ -57,17 +57,12 @@ public class TurnSystem : MonoBehaviour
         Move m = _Agent.agent(a, f, pstats, fstats);
         fMove = m;
         fmove = m;
-        Debug.Log(fmove.Name);
-        Debug.Log(pmove.Name);
-        // Debug.Log(fMove.Name);
-        // Debug.Log("Chosen Move ===" + m.Name);
         AMod.text = aM.ToString();
         DMod.text = dM.ToString();
         SaMod.text = spaM.ToString();
         SdMod.text = spdM.ToString();
         sentences = new Queue<string>();
-        Debug.Log(pmove.Info.Equals("First"));
-        Debug.Log(fmove.Info.Equals("First"));
+
         if (fcHP > 0 && cHP > 0)
         {
             if (pmove.Info.Equals("First") && !(fmove.Info.Equals("First")))
@@ -98,9 +93,8 @@ public class TurnSystem : MonoBehaviour
 
 
         DisplayNextSentence();
-
-
     }
+
 
     public void DisplayNextSentence()
     {
@@ -151,14 +145,7 @@ public class TurnSystem : MonoBehaviour
         string sentence = sentences.Dequeue();
         btext.text = sentence;
 
-
-
-
-
-
-
     }
-
 
 
     void EndDialogue()
@@ -172,29 +159,28 @@ public class TurnSystem : MonoBehaviour
         }
         catch (Exception e)
         {
-
+            //Debug.Log(e.Message);
         }
 
-        //Turn off move panel
     }
+
 
     void damageCalc(Move m, ActivePokemon a, ActivePokemon d)
     {
+        TypeCheck type = new TypeCheck();
         previousA = pActive;
         previousF = fActive;
-        //Calculate modifier
-
 
         double mod = 1;
-        if (isSuperEffective(m, d.P))
+        if (type.isSuperEffective(m.Type, d.P))
         {
             mod = mod * 2;
         }
-        if (isNotEffective(m, d.P))
+        if (type.isNotEffective(m.Type, d.P))
         {
             mod = mod * 0.5;
         }
-        if (isImmune(m, d.P))
+        if (type.isImmune(m.Type, d.P))
         {
             mod = mod * 0;
         }
@@ -203,15 +189,13 @@ public class TurnSystem : MonoBehaviour
             mod = mod * 1.5;
         }
 
-        //Damage  = ((((2*LVL)/5) +2) * Power *Attack/Defense) /50) +2
         if (!m.Info.Equals("Heal") && !m.Type.Equals("Null"))
         {
             double typeA = 0;
             double typeD = 0;
             if (m.Attack.Equals("S"))
             {
-                //Debug.Log("User Modifier: " + spaM);
-                //Debug.Log("Foe Modifier: " + fspaM);
+                
                 if (First)
                 {
                     typeA = a.P.Stats[0].SpAtk * spaM;
@@ -226,8 +210,7 @@ public class TurnSystem : MonoBehaviour
             }
             else if (m.Attack.Equals("P"))
             {
-                // Debug.Log("User Modifier: " + aM);
-                // Debug.Log("Foe Modifier: " + faM);
+             
                 if (First)
                 {
                     typeA = a.P.Stats[0].Atk * aM;
@@ -260,7 +243,7 @@ public class TurnSystem : MonoBehaviour
                     sliderUpdate(pSlider, pImage, a.P);
 
                 }
-                //AUp, DDownSpDown,iw
+             
                 else if (m.Info.Equals("AUp"))
                 {
                     aM = modIncrease(aM, 1);
@@ -269,7 +252,7 @@ public class TurnSystem : MonoBehaviour
                 {
                     dM = modDecrease(dM, 1);
                     spdM = modDecrease(spdM, 1);
-                    //Debug.Log(dM + "," + spdM);
+                    
                 }
 
                 fcHP = fcHP - damage;
@@ -316,10 +299,8 @@ public class TurnSystem : MonoBehaviour
 
                 sliderUpdate(pSlider, pImage, d.P);
             }
-
-
         }
-        //
+       
         else if (m.Info.Equals("Heal"))
         {
             if (a.Equals(pActive))
@@ -334,23 +315,18 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
-                // Debug.Log("Foe recovery test");
-                //  Debug.Log(fcHP);
+               
                 fcHP = fcHP + (a.P.Stats[0].HP / 2);
-                // Debug.Log(fcHP);
                 if (fcHP > a.P.Stats[0].HP)
                 {
                     fcHP = a.P.Stats[0].HP;
                 }
-                // Debug.Log(fcHP);
                 fSlider.value = fcHP;
                 sliderUpdate(fSlider, fImage, a.P);
             }
         }
         else
         {
-            //Debug.Log(First);
-            //  Debug.Log("Stat Move");
             if (m.Info.Equals("AUpDUp"))
             {
                 if (a.Equals(pActive))
@@ -379,7 +355,6 @@ public class TurnSystem : MonoBehaviour
             }
             else if (m.Info.Equals("SpAUp2"))
             {
-                //  Debug.Log("Nasty Plot!");
                 if (a.Equals(pActive))
                 {
                     spaM = modIncrease(spaM, 2);
@@ -391,10 +366,7 @@ public class TurnSystem : MonoBehaviour
                 }
 
             }
-            else
-            {
-                //  Debug.Log("Bleh");
-            }
+        
             AMod.text = aM.ToString();
             DMod.text = dM.ToString();
             SaMod.text = spaM.ToString();
@@ -409,340 +381,22 @@ public class TurnSystem : MonoBehaviour
         SdMod.text = spdM.ToString();
     }
 
-    bool isSuperEffective(Move m, Pokemon d)
-    {
+    
 
-        String moveType = m.Type;
-        String pType = d.Type;
-
-        if (moveType.Equals("Water"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Ground") || pType.Equals("Rock"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Grass"))
-        {
-            if (pType.Equals("Water") || pType.Equals("Ground") || pType.Equals("Rock"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fire"))
-        {
-            if (pType.Equals("Ice") || pType.Equals("Steel") || pType.Equals("Bug") || pType.Equals("Grass"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Electric"))
-        {
-            if (pType.Equals("Water") || pType.Equals("Flying"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ice"))
-        {
-            if (pType.Equals("Grass") || pType.Equals("Ground") || pType.Equals("Flying") || pType.Equals("Dragon"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fighting"))
-        {
-            if (pType.Equals("Normal") || pType.Equals("Rock") || pType.Equals("Ice") || pType.Equals("Dark") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Poison"))
-        {
-            if (pType.Equals("Grass") || pType.Equals("Fairy"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ground"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Electric") || pType.Equals("Poison") || pType.Equals("Rock") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-
-        }
-        else if (moveType.Equals("Flying"))
-        {
-            if (pType.Equals("Fighting") || pType.Equals("Bug") || pType.Equals("Grass"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Psychic"))
-        {
-            if (pType.Equals("Fighting") || pType.Equals("Poison"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Bug"))
-        {
-            if (pType.Equals("Psychic") || pType.Equals("Dark") || pType.Equals("Grass"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Rock"))
-        {
-            if (pType.Equals("Flying") || pType.Equals("Fire") || pType.Equals("Ice") || pType.Equals("Bug"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ghost"))
-        {
-            if (pType.Equals("Ghost") || pType.Equals("Psychic"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Dragon"))
-        {
-            if (pType.Equals("Dragon"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Dark"))
-        {
-            if (pType.Equals("Ghost") || pType.Equals("Psychic"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Steel"))
-        {
-            if (pType.Equals("Ice") || pType.Equals("Rock") || pType.Equals("Fairy"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fairy"))
-        {
-            if (pType.Equals("Dragon") || pType.Equals("Dark") || pType.Equals("Fighting"))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-    bool isNotEffective(Move m, Pokemon d)
-    {
-        String moveType = m.Type;
-        String pType = d.Type;
-
-        if (moveType.Equals("Water"))
-        {
-            if (pType.Equals("Water") || pType.Equals("Grass") || pType.Equals("Dragon"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Grass"))
-        {
-            if (pType.Equals("Grass") || pType.Equals("Fire") || pType.Equals("Dragon") || pType.Equals("Poison") || pType.Equals("Bug") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fire"))
-        {
-            if (pType.Equals("Water") || pType.Equals("Fire") || pType.Equals("Dragon") || pType.Equals("Rock"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Electric"))
-        {
-            if (pType.Equals("Grass") || pType.Equals("Electric") || pType.Equals("Dragon"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ice"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Water") || pType.Equals("Ice") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fighting"))
-        {
-            if (pType.Equals("Poison") || pType.Equals("Flying") || pType.Equals("Psychic") || pType.Equals("Bug") || pType.Equals("Fairy"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Poison"))
-        {
-            if (pType.Equals("Poison") || pType.Equals("Ground") || pType.Equals("Rock") || pType.Equals("Ghost"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ground"))
-        {
-            if (pType.Equals("Grass") || pType.Equals("Bug"))
-            {
-                return true;
-            }
-
-        }
-        else if (moveType.Equals("Flying"))
-        {
-            if (pType.Equals("Electric") || pType.Equals("Rock") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Psychic"))
-        {
-            if (pType.Equals("Psychic") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Bug"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Fighting") || pType.Equals("Flying") || pType.Equals("Poison") || pType.Equals("Ghost") || pType.Equals("Steel") || pType.Equals("Fairy"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Rock"))
-        {
-            if (pType.Equals("Fighting") || pType.Equals("Ground") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Ghost"))
-        {
-            if (pType.Equals("Dark"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Dragon"))
-        {
-            if (pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Dark"))
-        {
-            if (pType.Equals("Fighting") || pType.Equals("Dark") || pType.Equals("Fairy"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Steel"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Water") || pType.Equals("Electric") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Fairy"))
-        {
-            if (pType.Equals("Fire") || pType.Equals("Poison") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-        else if (moveType.Equals("Normal"))
-        {
-            if (pType.Equals("Rock") || pType.Equals("Steel"))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    bool isImmune(Move m, Pokemon d)
-    {
-        if (d.Type.Equals("Fairy"))
-        {
-            if (m.Type.Equals("Dragon"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Ground"))
-        {
-            if (m.Type.Equals("Electric"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Normal"))
-        {
-            if (m.Type.Equals("Ghost"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Ghost"))
-        {
-            if (m.Type.Equals("Normal") || m.Type.Equals("Fighting"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Flying"))
-        {
-            if (m.Type.Equals("Ground"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Dark"))
-        {
-            if (m.Type.Equals("Psychic"))
-            {
-                return true;
-            }
-        }
-        else if (d.Type.Equals("Steel"))
-        {
-            if (m.Type.Equals("Poison"))
-            {
-                return true;
-            }
-        }
-
-
-        return false;
-    }
-
+   
+    
     void updateText(Pokemon a, Pokemon d, Move m, Move n, battleText battletext)
     {
-        if (isSuperEffective(m, d))
+        TypeCheck type = new TypeCheck();
+        if (type.isSuperEffective(m.Type, d))
         {
             b.sentences[0] = a.Name + " used " + m.Name + ". It's Super Effective!";
         }
-        else if (isNotEffective(m, d))
+        else if (type.isNotEffective(m.Type, d))
         {
             b.sentences[0] = a.Name + " used " + m.Name + ". It's not very effective!";
         }
-        else if (isImmune(m, d))
+        else if (type.isImmune(m.Type, d))
         {
             b.sentences[0] = a.Name + " used " + m.Name + ". It had no effect.";
         }
@@ -750,15 +404,15 @@ public class TurnSystem : MonoBehaviour
         { ///DDownSpDDown AUpDUp SpAUpSpDUp SpAUp2
             extraText(m, a, 0);
         }
-        if (isSuperEffective(n, a))
+        if (type.isSuperEffective(n.Type, a))
         {
             b.sentences[1] = d.Name + " used " + n.Name + ". It was Super Effective!";
         }
-        else if (isNotEffective(n, a))
+        else if (type.isNotEffective(n.Type, a))
         {
             b.sentences[1] = d.Name + " used " + n.Name + ". It's not very effective!";
         }
-        else if (isImmune(n, a))
+        else if (type.isImmune(n.Type, a))
         {
             b.sentences[1] = d.Name + " used" + n.Name + ". It had no effect.";
         }
@@ -833,10 +487,10 @@ public class TurnSystem : MonoBehaviour
         return modd;
     }
 
+
     double modDecrease(double modd, int stages)
     {
-        // Debug.Log("Decreasing from "+modd);
-
+     
         do
         {
             if (modd > 1)
@@ -846,23 +500,17 @@ public class TurnSystem : MonoBehaviour
             }
             else if (modd > 0.25 && modd <= 1)
             {
-                // Debug.Log("Standard decrease");
                 modd = modDown(modd);
-                //  Debug.Log("Returned Value: " + modd);
             }
 
             stages = stages - 1;
         } while (stages != 0);
 
-        // Debug.Log(modd);
         return modd;
     }
 
     double modDown(double modd)
     {
-        // Debug.Log("Down");
-        // Debug.Log(modd);
-
         if (modd == 0.67)
         {
             modd = 0.5;
@@ -887,7 +535,7 @@ public class TurnSystem : MonoBehaviour
         {
             modd = 0.27;
         }
-        // Debug.Log(modd);
+
         return modd;
     }
 
