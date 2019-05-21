@@ -39,18 +39,8 @@ class Stats {
         _stats.Add("Venusaur", new List<Stat> { new Stat(HPCalc(80), statCalc(82), statCalc(83), statCalc(100), statCalc(100), statCalc(80)) });
         _stats.Add("Vulpix", new List<Stat> { new Stat(HPCalc(38), statCalc(41), statCalc(40), statCalc(50), statCalc(65), statCalc(65)) });
 
-
-
-
-
-
-
-
-
-
-
-
     }
+
 
     public static Stats GetStats()
     {
@@ -66,6 +56,7 @@ class Stats {
         }
         return _instance;
     }
+
 
     public Dictionary<string, List<Stat>> GetStatList
     {
