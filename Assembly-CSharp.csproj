@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{42D319B3-173F-47BA-18DB-E1D7E63030AC}</ProjectGuid>
+    <ProjectGuid>{69F22A6F-CF8F-6878-15C7-E99FE921186C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -81,16 +81,16 @@
     <None Include="Assets\laxer Assets\creek\Shaders\RunningWaterSimple.shader" />
     <None Include="Assets\laxer Assets\creek\Shaders\HeightBlendx5.shader" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/rachel.meyer/Desktop/PokemonTest/PokemonGame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/rachel.meyer/pokemongame/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/rachel.meyer/Desktop/PokemonTest/PokemonGame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/rachel.meyer/pokemongame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/rachel.meyer/Desktop/PokemonTest/PokemonGame/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/rachel.meyer/pokemongame/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/rachel.meyer/Desktop/PokemonTest/PokemonGame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/rachel.meyer/pokemongame/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
