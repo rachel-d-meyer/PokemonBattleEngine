@@ -68,7 +68,7 @@ public class Agent : MonoBehaviour
 
         holderList = updateHolderList();
 
-        //if depth is 3, nodes children have no children. 
+       //Find leaf nodes and fill parent A-B values from this.
         int lowestDepth = 0;
         foreach (Node n in holderList)
         {
@@ -76,7 +76,6 @@ public class Agent : MonoBehaviour
             {
                 Node parent = FindParent(n.Parent);
                 Node holderNode = parent;
-                //fill parent a-b with child heuristic 
                 int high = parent.HighValue;
                 int low = parent.LowValue;
                 Node newNode = n;
@@ -157,13 +156,10 @@ public class Agent : MonoBehaviour
                         }
                         otherList.Add(parent);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        //Debug.Log("Nothing left");
+                        Debug.Log(e.Message);
                     }
-
-
-
                 }
             }
 
@@ -181,16 +177,12 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in p.P.Moves)
             {
-
-
                 AddPlayerNode(parent, m);
             }
             foreach (Move m in a.P.Moves)
             {
                 if (m.Info.Equals("First"))
                 {
-
-
                     AddAgentNode(parent, m);
                 }
             }
@@ -200,7 +192,6 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in a.P.Moves)
             {
-
                 AddAgentNode(parent, m);
             }
             foreach (Move m in p.P.Moves)
@@ -212,6 +203,7 @@ public class Agent : MonoBehaviour
             }
         }
     }
+
 
     public void ExpandNodes2(int parent)
     {
@@ -227,7 +219,6 @@ public class Agent : MonoBehaviour
             {
                 if (!(m.Info.Equals("First")))
                 {
-
                     AddAgentNode(parent, m);
                 }
             }
@@ -239,7 +230,6 @@ public class Agent : MonoBehaviour
             {
                 if (!m.Info.Equals("First"))
                 {
-
                     AddPlayerNode(parent, m);
                 }
             }
@@ -251,9 +241,6 @@ public class Agent : MonoBehaviour
             {
                 if (!m.Info.Equals("First"))
                 {
-
-
-
                     AddAgentNode(parent, m);
                 }
             }
@@ -272,15 +259,13 @@ public class Agent : MonoBehaviour
             {
                 if (!m.Info.Equals("First"))
                 {
-
-
-
                     AddPlayerNode(parent, m);
                 }
             }
         }
 
     }
+
 
     public Move findBestMove()
     {
@@ -289,7 +274,6 @@ public class Agent : MonoBehaviour
         bool playerpriority = playerPriority();
         bool agentpriority = agentPriority();
 
-        //Debug.Log("Priority: " + playerpriority + "/" + agentpriority);
 
         int low = 1000;
         int high = -1000;
@@ -316,8 +300,6 @@ public class Agent : MonoBehaviour
             Move choice = new Move();
             foreach (Node n in Nodes)
             {
-                //Debug.Log(n.ID);
-
                 if (node.Children.Contains(n.ID))
                 {
                     if (n.HighValue > high)
@@ -330,14 +312,11 @@ public class Agent : MonoBehaviour
 
             if (choice.Name == null)
             {
-                Debug.Log("Name is null! Oh no!");
                 try
                 {
                     high = -1000;
                     foreach (Node n in Nodes)
                     {
-                        //Debug.Log(n.ID);
-
                         if (highNode.Children.Contains(n.ID))
                         {
                             if (n.HighValue > high)
@@ -347,11 +326,10 @@ public class Agent : MonoBehaviour
                             }
                         }
                     }
-                    Debug.Log("Tried");
+                    
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Caught!");
                     Debug.Log(e.Message);
                     choice = a.P.Moves[0];
                 }
@@ -399,7 +377,6 @@ public class Agent : MonoBehaviour
                     }
                     else
                     {
-
                         high = n.HighValue;
                         choice = n.M;
                     }
@@ -457,10 +434,6 @@ public class Agent : MonoBehaviour
                
                 foreach (Node n in Nodes)
                 {
-                    if (n.Depth == (priorityNode.Depth + 1))
-                    {
-                        //Why did I put this in???
-                    }
                     if (priorityNode.Children.Contains(n.ID))
                     {
                         if (n.HighValue > high)
@@ -510,15 +483,12 @@ public class Agent : MonoBehaviour
         double[] playersStats = new double[5];
 
         Node parentNode = FindParent(parent);
-        //Debug.Log("Parent ID:" + parentNode.ID + " Parent HP:" + parentNode.AttackerStats[0] + "," + parentNode.DefenderStats[0]);
         if (parentNode.ID > 0)
         {
             if ((parentNode.Depth + 1) % 2 == 0)
             {
-
                 playersStats = transferStats(parentNode.AttackerStats);
                 agentsStats = transferStats(parentNode.DefenderStats);
-
             }
             else
             {
@@ -526,13 +496,11 @@ public class Agent : MonoBehaviour
                 {
                     playersStats = transferStats(parentNode.AttackerStats);
                     agentsStats = transferStats(parentNode.DefenderStats);
-
                 }
                 else
                 {
                     agentsStats = transferStats(parentNode.AttackerStats);
                     playersStats = transferStats(parentNode.DefenderStats);
-
                 }
 
             }
@@ -554,9 +522,6 @@ public class Agent : MonoBehaviour
             {
                 if (x < 5)
                 {
-
-
-
                     playerStats.Stats[x] = i;
                     playersStats[x] = i;
                     x++;
@@ -565,20 +530,18 @@ public class Agent : MonoBehaviour
 
         }
 
-
         List<double[]> result = DamageCalculator.calc(m, a, p, agentsStats, playersStats);
         agentsStats = result[0];
         playersStats = result[1];
-
 
         double agentHP = (agentsStats[0] / a.P.Stats[0].HP) * 100;
         double playerHP = (playersStats[0] / p.P.Stats[0].HP) * 100;
         int value = (int)(agentHP - playerHP);
         int ID = Nodes.Count;
-        // Debug.Log("New Node:" + ID + " Move: " + m.Name + "Value:" + value + "HP: " + agentsStats[0] + "," + playersStats[0] +"Depth: "+(parentNode.Depth+1));
         Nodes.Add(new Node(ID, m, a, new double[] { agentsStats[0], agentsStats[1], agentsStats[2], agentsStats[3], agentsStats[4] }, new double[] { playersStats[0], playersStats[1], playersStats[2], playersStats[3], playersStats[4] }, parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
         updateParent(parentNode, ID);
     }
+
 
     public void AddPlayerNode(int parent, Move m)
     {
@@ -588,7 +551,7 @@ public class Agent : MonoBehaviour
         double[] playersStats = new double[5];
         double[] agentsStats = new double[5];
         Node parentNode = FindParent(parent);
-        //  Debug.Log("Parent ID:" + parentNode.ID + " Parent HP:" + parentNode.AttackerStats[0] + "," + parentNode.DefenderStats[0]);
+
         if (parentNode.ID > 0)
         {
             if (parentNode.Depth + 1 % 2 == 0)
@@ -602,13 +565,11 @@ public class Agent : MonoBehaviour
                 {
                     playersStats = transferStats(parentNode.AttackerStats);
                     agentsStats = transferStats(parentNode.DefenderStats);
-
                 }
                 else
                 {
                     agentsStats = transferStats(parentNode.AttackerStats);
                     playersStats = transferStats(parentNode.DefenderStats);
-
                 }
 
             }
@@ -620,9 +581,6 @@ public class Agent : MonoBehaviour
             {
                 if (x < 5)
                 {
-
-
-
                     int y = i;
                     agentsStats[x] = i;
                     x++;
@@ -633,8 +591,6 @@ public class Agent : MonoBehaviour
             {
                 if (x < 5)
                 {
-
-
                     int y = i;
                     playersStats[x] = i;
                     x++;
@@ -652,11 +608,11 @@ public class Agent : MonoBehaviour
         int value = (int)(agentHP - playerHP);
 
         int ID = Nodes.Count;
-        // Debug.Log("New Node:" + ID + " Move: "+m.Name+ "Value:" + value + "HP: "+agentsStats[0]+","+playersStats[0] + "Depth: " + (parentNode.Depth + 1));
 
         Nodes.Add(new Node(ID, m, p, new double[] { playersStats[0], playersStats[1], playersStats[2], playersStats[3], playersStats[4] }, new double[] { agentsStats[0], agentsStats[1], agentsStats[2], agentsStats[3], agentsStats[4] }, parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
         updateParent(parentNode, ID);
     }
+
 
     public Node FindParent(int parent)
     {
@@ -668,18 +624,18 @@ public class Agent : MonoBehaviour
             }
         }
 
-
         return new Node();
     }
+
 
     public void updateParent(Node parent, int child)
     {
         parent.Children.Add(child);
     }
 
+
     public Node backFillHeuristic(Node n)
     {
-        // Debug.Log("Entered");
         List<int> children = n.Children;
         List<int> heuristicValue = new List<int>();
         List<Node> childNodes = new List<Node>();
@@ -690,7 +646,6 @@ public class Agent : MonoBehaviour
                 heuristicValue.Add(node.Value);
             }
         }
-        //   Debug.Log("Added values");
 
         try
         {
@@ -698,7 +653,6 @@ public class Agent : MonoBehaviour
             int lValue = heuristicValue[0];
             foreach (int x in heuristicValue)
             {
-                // Debug.Log(x);
 
                 if (x > hValue)
                 {
@@ -711,21 +665,21 @@ public class Agent : MonoBehaviour
                 }
 
             }
-            // Debug.Log("Found Alpha & Beta");
+            
             n.HighValue = hValue;
             n.LowValue = lValue;
-            //Debug.Log("Alpha: " + n.HighValue + " Beta: " + n.LowValue);
+           
         }
         catch (ArgumentOutOfRangeException w)
         {
-            // Debug.Log(heuristicValue.Count);
+            Debug.Log("Error");
         }
         return n;
     }
 
+
     public Node backFill(Node n)
     {
-        // Debug.Log("Backfill");
         List<int> children = n.Children;
 
         List<int> LowerValue = new List<int>();
@@ -738,15 +692,10 @@ public class Agent : MonoBehaviour
 
             if (children.Contains(node.ID))
             {
-                //Debug.Log("B"+node.LowValue);
-                //Debug.Log("A"+node.HighValue);
+                
                 LowerValue.Add(node.LowValue);
                 HigherValue.Add(node.HighValue);
-                if (n.ID >= 1 && n.ID <= 5)
-                {
-                    //Debug.Log("Child High: " + node.LowValue+ " ID: "+node.ID);
-                    // Debug.Log("Child Low: " + node.LowValue);
-                }
+                
             }
         }
         if (children.Count > 1)
@@ -757,14 +706,10 @@ public class Agent : MonoBehaviour
             int lValue = LowerValue[0];
             foreach (int x in LowerValue)
             {
-                //Debug.Log(x);
-
-
                 if (x < lValue)
                 {
                     lValue = x;
                 }
-
             }
             foreach (int x in HigherValue)
             {
@@ -775,8 +720,6 @@ public class Agent : MonoBehaviour
             }
             n.HighValue = hValue;
             n.LowValue = lValue;
-
-            //Debug.Log("Alpha: " + hValue + " Beta: " + lValue);
         }
         return n;
     }
@@ -788,13 +731,10 @@ public class Agent : MonoBehaviour
         foreach (Node n in Nodes)
         {
             holderList.Add(n);
-
         }
-
 
         return holderList;
     }
-
 
 
     public bool playerPriority()
@@ -809,6 +749,7 @@ public class Agent : MonoBehaviour
         }
         return false;
     }
+
 
     public bool agentPriority()
     {
@@ -838,6 +779,7 @@ public class Agent : MonoBehaviour
         return to;
     }
 
+
     public bool isChildLeaf(Node n)
     {
         List<int> children = n.Children;
@@ -850,22 +792,17 @@ public class Agent : MonoBehaviour
                 {
                     return false;
                 }
-                else
-                {
-                    // Debug.Log(i + " is a leaf!");
-                }
+              
             }
         }
-
-
         return true;
     }
+
 
     public bool findChild(int ID)
     {
         foreach (Node n in Nodes)
         {
-            //Debug.Log("ID: " + n.ID + " Children: " + n.Children.Count);
             if (n.ID == ID && n.Children.Count <= 0)
             {
                 return true;
@@ -879,7 +816,7 @@ public class Agent : MonoBehaviour
         foreach (Node n in Nodes)
         {
             if (n.Children.Count > 0) { }
-            // Debug.Log("ID: " + n.ID + " Alpha: " + n.HighValue + " Beta: " + n.LowValue+" Move: "+n.M.Name);
+           
         }
     }
 
@@ -909,24 +846,24 @@ public class Agent : MonoBehaviour
 
     public Pokemon chooseNext(List<Pokemon> fainted, List<GameObject> allFoePokemon, List<int> foeOrder, List<Pokemon> allMon, Pokemon player)
     {
-        // Debug.Log(fainted.Count);
+     
         List<String> choices = new List<String>();
 
         foreach (int i in foeOrder)
         {
             choices.Add(allFoePokemon[i].tag);
-            //   Debug.Log(allFoePokemon[i].tag);
+          
         }
         List<Pokemon> mon = new List<Pokemon>();
         foreach (String s in choices)
         {
             Pokemon p = findMon(s, allMon);
             mon.Add(p);
-            // Debug.Log(p.Name);
+          
             if (fainted.Contains(p))
             {
                 mon.Remove(p);
-                //   Debug.Log("Removed: " + p.Name);
+           
             }
         }
 
@@ -939,19 +876,19 @@ public class Agent : MonoBehaviour
             mod = 0;
             if (_type.isSuperEffective(p, player))
             {
-                mod = 50;
+                mod = 100;
             }
             else if (_type.isNotEffective(p, player))
             {
-                mod = -50;
+                mod = -100;
             }
             else if (_type.isImmune(p, player))
             {
-                mod = -100;
+                mod = -200;
             }
-            Debug.Log(mod);
+      
             int i = p.Stats[0].HP + p.Stats[0].Atk + p.Stats[0].Def + p.Stats[0].SpAtk + p.Stats[0].SpDef + p.Stats[0].Spd + mod;
-            Debug.Log("Pokemon: "+p.Name+" "+i);
+         
             values.Add(i);
         }
         int index = 0;
@@ -964,11 +901,7 @@ public class Agent : MonoBehaviour
                 index = values.IndexOf(v);
             }
         }
-
-        // Debug.Log(index);
         return mon[index];
-        Debug.Log(allFoePokemon.Count);
-        Debug.Log(foeOrder.Count);
     }
 
 
