@@ -874,15 +874,15 @@ public class Agent : MonoBehaviour
         foreach (Pokemon p in mon)
         {
             mod = 0;
-            if (_type.isSuperEffective(p, player))
+            if (_type.isSuperEffective(p.Type, player))
             {
                 mod = 100;
             }
-            else if (_type.isNotEffective(p, player))
+            else if (_type.isNotEffective(p.Type, player))
             {
                 mod = -100;
             }
-            else if (_type.isImmune(p, player))
+            else if (_type.isImmune(p.Type, player))
             {
                 mod = -200;
             }
