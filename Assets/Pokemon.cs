@@ -5,10 +5,10 @@ public struct Pokemon
 {
     public string Name, Type;
     public List<Move> Moves;
-    public List<Stat> Stats;
+    public List<BaseStat> Stats;
     public bool Playable;
 
-	public Pokemon(string name, string type,List<Move> moves, List<Stat> stats,bool playable)
+	public Pokemon(string name, string type,List<Move> moves, List<BaseStat> stats,bool playable)
 	{
         Name = name;
         Type = type;

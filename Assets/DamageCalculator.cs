@@ -2,20 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets;
 
 public class DamageCalculator
 {
 
 
 
-    internal static List<double[]> calc(Move m, ActivePokemon a, ActivePokemon d, double[] aStats, double[] dStats)
+    internal static List<Stat> calc(Move m, ActivePokemon a, ActivePokemon d, Stat aStats, Stat dStats)
     {
-        List<double[]> resultingStats = new List<double[]>();
-        int fcHP = (int)dStats[0];
-        int cHP = (int)aStats[0];
+        List<Stat> resultingStats = new List<Stat>();
+        int fcHP = (int)dStats.hp;
+        int cHP = (int)aStats.hp;
         TypeCheck _type = new TypeCheck();
         double mod = 1;
-        if (aStats[0] > 0)
+        if (aStats.hp > 0)
         {
             if (_type.isSuperEffective(m.Type, d.P))
             {
@@ -41,15 +42,15 @@ public class DamageCalculator
                 if (m.Attack.Equals("S"))
                 {
 
-                    typeA = a.P.Stats[0].SpAtk * aStats[3];
-                    typeD = d.P.Stats[0].SpDef * dStats[3];
+                    typeA = a.P.Stats[0].SpAtk * aStats.specialAttack;
+                    typeD = d.P.Stats[0].SpDef * dStats.specialAttack;
 
                 }
                 else if (m.Attack.Equals("P"))
                 {
 
-                    typeA = a.P.Stats[0].Atk * aStats[2];
-                    typeD = d.P.Stats[0].Def * dStats[2];
+                    typeA = a.P.Stats[0].Atk * aStats.defence;
+                    typeD = d.P.Stats[0].Def * dStats.defence;
 
 
                 }
@@ -62,11 +63,11 @@ public class DamageCalculator
 
                 if (m.Info.Equals("Drain"))
                 {
-                    aStats[0] = aStats[0] + (damage / 2);
+                    aStats.hp = aStats.hp + (damage / 2);
 
-                    if (aStats[0] > a.P.Stats[0].HP)
+                    if (aStats.hp > a.P.Stats[0].HP)
                     {
-                        aStats[0] = a.P.Stats[0].HP;
+                        aStats.hp = a.P.Stats[0].HP;
                     }
 
 
@@ -74,23 +75,23 @@ public class DamageCalculator
                     
                     else if (m.Info.Equals("AUp"))
                     {
-                        aStats[1] = (int)modIncrease(aStats[1], 1);
+                        aStats.attack = (int)modIncrease(aStats.attack, 1);
                     }
                     else if (m.Info.Equals("DDownSpDDown"))
                     {
-                        aStats[2] = modDecrease(aStats[2], 1);
-                        aStats[4] = modDecrease(aStats[4], 1);
+                        aStats.defence = modDecrease(aStats.defence, 1);
+                        aStats.specialDefence = modDecrease(aStats.specialDefence, 1);
                     }
 
-                    if (dStats[0] < 0)
+                    if (dStats.hp < 0)
                     {
-                        dStats[0] = 0;
+                        dStats.hp = 0;
                     }
 
 
                 }
 
-                dStats[0] = dStats[0] - damage;
+                dStats.hp = dStats.hp - damage;
 
 
             }
@@ -98,10 +99,10 @@ public class DamageCalculator
             else if (m.Info.Equals("Heal"))
             {
 
-                aStats[0] = aStats[0] + (a.P.Stats[0].HP / 2);
-                if (aStats[0] > a.P.Stats[0].HP)
+                aStats.hp = aStats.hp + (a.P.Stats[0].HP / 2);
+                if (aStats.hp > a.P.Stats[0].HP)
                 {
-                    aStats[0] = a.P.Stats[0].HP;
+                    aStats.hp = a.P.Stats[0].HP;
                 }
 
 
@@ -114,15 +115,15 @@ public class DamageCalculator
                 if (m.Info.Equals("AUpDUp"))
                 {
 
-                    aStats[1] = modIncrease(aStats[1], 1);
-                    aStats[2] = modIncrease(aStats[2], 1);
+                    aStats.attack = modIncrease(aStats.attack, 1);
+                    aStats.defence = modIncrease(aStats.defence, 1);
 
                 }
                 else if (m.Info.Equals("SpAUpSpDUp"))
                 {
 
-                    aStats[3] = modIncrease(aStats[3], 1);
-                    aStats[4] = modIncrease(aStats[4], 1);
+                    aStats.specialAttack = modIncrease(aStats.specialAttack, 1);
+                    aStats.specialDefence = modIncrease(aStats.specialDefence, 1);
 
 
                 }
@@ -130,7 +131,7 @@ public class DamageCalculator
                 {
 
 
-                    aStats[3] = modIncrease(aStats[3], 2);
+                    aStats.specialAttack = modIncrease(aStats.specialAttack, 2);
 
 
                 }
@@ -141,13 +142,13 @@ public class DamageCalculator
 
 
             }
-            if (aStats[0] < 0)
+            if (aStats.hp < 0)
             {
-                aStats[0] = 0;
+                aStats.hp = 0;
             }
-            if (dStats[0] < 0)
+            if (dStats.hp < 0)
             {
-                dStats[0] = 0;
+                dStats.hp = 0;
             }
         }
         resultingStats.Add(aStats);

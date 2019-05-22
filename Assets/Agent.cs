@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Assets;
 
 public class Agent : MonoBehaviour
 {
@@ -9,10 +10,10 @@ public class Agent : MonoBehaviour
     public List<Node> Nodes = new List<Node>();
     public ActivePokemon p;
     public ActivePokemon a;
-    public double[] startpStats = new double[6];
-    public double[] startaStats = new double[6];
-    public statArray agentStats;
-    public statArray playerStats;
+    public Stat startpStats;
+    public Stat startaStats;
+    public Stat agentStats;
+    public Stat playerStats;
     List<Node> testList = new List<Node>();
     List<Node> holderList = new List<Node>();
     List<Node> filledNodes = new List<Node>();
@@ -20,19 +21,19 @@ public class Agent : MonoBehaviour
     List<Node> removedNodes = new List<Node>();
 
 
-    public Move agent(ActivePokemon P, ActivePokemon A, double[] PStats, double[] AStats)
+    public Move agent(ActivePokemon P, ActivePokemon A, Stat PStats, Stat AStats)
     {
         Nodes.Clear();
         p = P;
         a = A;
-        PStats.CopyTo(startpStats, 0);
-        AStats.CopyTo(startaStats, 0);
+        startpStats.CopyFrom(PStats);
+        startaStats.CopyFrom(AStats);
 
-        agentStats.Stats = AStats;
-        playerStats.Stats = PStats;
+        agentStats = AStats;
+        playerStats = PStats;
 
         //Add the inital Node.
-        Nodes.Add(new Node(0, new Move(), new ActivePokemon(), new double[6], new double[6], new int(), new List<int>(), new int(), 0, -1000, 1000));
+        Nodes.Add(new Node(0, new Move(), new ActivePokemon(), null, null, new int(), new List<int>(), new int(), 0, -1000, 1000));
 
         //Find all children of this Node.
         expandNodes(0);
@@ -42,7 +43,7 @@ public class Agent : MonoBehaviour
 
         foreach (Node n in holderList)
         {
-            if (n.Parent == 0 && n.ID != 0 && !(n.AttackerStats[0] == 0 || n.DefenderStats[0] == 0))
+            if (n.Parent == 0 && n.ID != 0 && !(n.AttackerStats.hp == 0 || n.DefenderStats.hp == 0))
             {
                 ExpandNodes2(n.ID);
             }
@@ -51,7 +52,7 @@ public class Agent : MonoBehaviour
         holderList = updateHolderList();
         foreach (Node n in holderList)
         {
-            if (n.Depth == 2 && !(n.AttackerStats[0] == 0 || n.DefenderStats[0] == 0))
+            if (n.Depth == 2 && !(n.AttackerStats.hp == 0 || n.DefenderStats.hp == 0))
             {
                 expandNodes(n.ID);
             }
@@ -60,7 +61,7 @@ public class Agent : MonoBehaviour
         holderList = updateHolderList();
         foreach (Node n in holderList)
         {
-            if (n.Depth == 3 && !(n.AttackerStats[0] == 0 || n.DefenderStats[0] == 0))
+            if (n.Depth == 3 && !(n.AttackerStats.hp == 0 || n.DefenderStats.hp == 0))
             {
                 ExpandNodes2(n.ID);
             }
@@ -479,66 +480,49 @@ public class Agent : MonoBehaviour
         bool playerFaster = p.P.Stats[0].Spd > a.P.Stats[0].Spd;
         bool pPriority = playerPriority();
         bool aPriority = agentPriority();
-        double[] agentsStats = new double[5];
-        double[] playersStats = new double[5];
+        Stat agentsStats = null;
+        Stat playersStats = null;
 
         Node parentNode = FindParent(parent);
         if (parentNode.ID > 0)
         {
             if ((parentNode.Depth + 1) % 2 == 0)
             {
-                playersStats = transferStats(parentNode.AttackerStats);
-                agentsStats = transferStats(parentNode.DefenderStats);
+                playersStats = parentNode.AttackerStats.Copy();
+                agentsStats = parentNode.DefenderStats.Copy();
             }
             else
             {
                 if (parentNode.Pokemon.Player)
                 {
-                    playersStats = transferStats(parentNode.AttackerStats);
-                    agentsStats = transferStats(parentNode.DefenderStats);
+                    playersStats = parentNode.AttackerStats.Copy();
+                    agentsStats = parentNode.DefenderStats.Copy();
                 }
                 else
                 {
-                    agentsStats = transferStats(parentNode.AttackerStats);
-                    playersStats = transferStats(parentNode.DefenderStats);
+                    agentsStats = parentNode.AttackerStats.Copy();
+                    playersStats = parentNode.DefenderStats.Copy();
                 }
 
             }
         }
         else
         {
-            int x = 0;
-            foreach (int i in startaStats)
-            {
-                if (x < 5)
-                {
-                    agentStats.Stats[x] = i;
-                    agentsStats[x] = i;
-                    x++;
-                }
-            }
-            x = 0;
-            foreach (int i in startpStats)
-            {
-                if (x < 5)
-                {
-                    playerStats.Stats[x] = i;
-                    playersStats[x] = i;
-                    x++;
-                }
-            }
-
+            agentStats.CopyFrom(startaStats);
+            agentsStats.CopyFrom(startaStats);
+            playerStats.CopyFrom(startpStats);
+            playersStats.CopyFrom(startpStats);
         }
 
-        List<double[]> result = DamageCalculator.calc(m, a, p, agentsStats, playersStats);
+        List<Stat> result = DamageCalculator.calc(m, a, p, agentsStats, playersStats);
         agentsStats = result[0];
         playersStats = result[1];
 
-        double agentHP = (agentsStats[0] / a.P.Stats[0].HP) * 100;
-        double playerHP = (playersStats[0] / p.P.Stats[0].HP) * 100;
+        double agentHP = (agentsStats.hp / a.P.Stats[0].HP) * 100;
+        double playerHP = (playersStats.hp / p.P.Stats[0].HP) * 100;
         int value = (int)(agentHP - playerHP);
         int ID = Nodes.Count;
-        Nodes.Add(new Node(ID, m, a, new double[] { agentsStats[0], agentsStats[1], agentsStats[2], agentsStats[3], agentsStats[4] }, new double[] { playersStats[0], playersStats[1], playersStats[2], playersStats[3], playersStats[4] }, parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
+        Nodes.Add(new Node(ID, m, a, agentsStats.Copy(), playerStats.Copy(), parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
         updateParent(parentNode, ID);
     }
 
@@ -548,68 +532,50 @@ public class Agent : MonoBehaviour
         bool playerFaster = p.P.Stats[0].Spd > a.P.Stats[0].Spd;
         bool pPriority = playerPriority();
         bool aPriority = agentPriority();
-        double[] playersStats = new double[5];
-        double[] agentsStats = new double[5];
+        Stat playersStats = null;
+        Stat agentsStats = null;
         Node parentNode = FindParent(parent);
 
         if (parentNode.ID > 0)
         {
             if (parentNode.Depth + 1 % 2 == 0)
             {
-                playersStats = transferStats(parentNode.DefenderStats);
-                agentsStats = transferStats(parentNode.AttackerStats);
+                playersStats = parentNode.DefenderStats.Copy();
+                agentsStats = parentNode.AttackerStats.Copy();
             }
             else
             {
                 if (parentNode.Pokemon.Player)
                 {
-                    playersStats = transferStats(parentNode.AttackerStats);
-                    agentsStats = transferStats(parentNode.DefenderStats);
+                    playersStats = parentNode.AttackerStats.Copy();
+                    agentsStats = parentNode.DefenderStats.Copy();
                 }
                 else
                 {
-                    agentsStats = transferStats(parentNode.AttackerStats);
-                    playersStats = transferStats(parentNode.DefenderStats);
+                    agentsStats = parentNode.AttackerStats.Copy();
+                    playersStats = parentNode.DefenderStats.Copy();
                 }
 
             }
         }
         else
         {
-            int x = 0;
-            foreach (int i in startaStats)
-            {
-                if (x < 5)
-                {
-                    int y = i;
-                    agentsStats[x] = i;
-                    x++;
-                }
-            }
-            x = 0;
-            foreach (int i in startpStats)
-            {
-                if (x < 5)
-                {
-                    int y = i;
-                    playersStats[x] = i;
-                    x++;
-                }
-            }
+            agentsStats.CopyFrom(startaStats);
+            playersStats.CopyFrom(startpStats);
         }
 
-        List<double[]> result = DamageCalculator.calc(m, p, a, playersStats, agentsStats);
+        List<Stat> result = DamageCalculator.calc(m, p, a, playersStats, agentsStats);
         playersStats = result[0];
         agentsStats = result[1];
 
-        double agentHP = (agentsStats[0] / a.P.Stats[0].HP) * 100;
-        double playerHP = (playersStats[0] / p.P.Stats[0].HP) * 100;
+        double agentHP = (agentsStats.hp / a.P.Stats[0].HP) * 100;
+        double playerHP = (playersStats.hp / p.P.Stats[0].HP) * 100;
 
         int value = (int)(agentHP - playerHP);
 
         int ID = Nodes.Count;
 
-        Nodes.Add(new Node(ID, m, p, new double[] { playersStats[0], playersStats[1], playersStats[2], playersStats[3], playersStats[4] }, new double[] { agentsStats[0], agentsStats[1], agentsStats[2], agentsStats[3], agentsStats[4] }, parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
+        Nodes.Add(new Node(ID, m, p, playersStats.Copy(), agentsStats.Copy(), parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
         updateParent(parentNode, ID);
     }
 
@@ -762,23 +728,6 @@ public class Agent : MonoBehaviour
         }
         return false;
     }
-
-    public double[] transferStats(double[] from)
-    {
-        double[] to = new double[6];
-        int count = 0;
-        foreach (double d in from)
-        {
-            if (count < 5)
-            {
-                to[count] = d;
-            }
-            count++;
-        }
-
-        return to;
-    }
-
 
     public bool isChildLeaf(Node n)
     {

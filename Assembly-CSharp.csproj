@@ -76,8 +76,6 @@
     <Compile Include="Assets\Pokemon.cs" />
     <Compile Include="Assets\spriteSort.cs" />
     <Compile Include="Assets\Stat.cs" />
-    <Compile Include="Assets\statArray.cs" />
-    <Compile Include="Assets\Stats.cs" />
     <Compile Include="Assets\TurnSystem.cs" />
     <Compile Include="Assets\TypeCheck.cs" />
     <None Include="Assets\laxer Assets\creek\Shaders\RunningWater.shader" />

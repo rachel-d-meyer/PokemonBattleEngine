@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets;
 
 public class TurnSystem : MonoBehaviour
 {
@@ -51,8 +52,8 @@ public class TurnSystem : MonoBehaviour
             fspaM = 1;
             fspdM = 1;
         }
-        double[] pstats = { cHP, aM, dM, spaM, spdM };
-        double[] fstats = { fcHP, faM, fdM, fspaM, fspdM };
+        Stat pstats = new Stat(cHP, aM, dM, spaM, spdM);
+        Stat fstats = new Stat(fcHP, faM, fdM, fspaM, fspdM);
         Agent _Agent = new Agent();
         Move m = _Agent.agent(a, f, pstats, fstats);
         fMove = m;
@@ -467,7 +468,7 @@ public class TurnSystem : MonoBehaviour
             b.sentences[0] = a.Name + " used " + m.Name + ". It had no effect.";
         }
         else
-        { ///DDownSpDDown AUpDUp SpAUpSpDUp SpAUp2
+        { 
             extraText(m, a, 0);
         }
         if (type.isSuperEffective(n.Type, a))

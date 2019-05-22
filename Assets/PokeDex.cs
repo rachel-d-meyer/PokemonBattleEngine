@@ -13,8 +13,8 @@ class PokeDex
         MoveSet moveSet = MoveSet.GetMoveSet();
         Dictionary<string, List<Move>> movesFor = moveSet.GetMovePool;
 
-        Stats stats = Stats.GetStats();
-        Dictionary<string, List<Stat>> statsFor = stats.GetStatList;
+        BaseStats stats = BaseStats.GetStats();
+        Dictionary<string, List<BaseStat>> statsFor = stats.GetStatList;
 
         _pokemon.Add(new Pokemon("Bulbasaur", "Grass", movesFor["Bulbasaur"], statsFor["Bulbasaur"], true));
         _pokemon.Add(new Pokemon("Charmander", "Fire", movesFor["Charmander"], statsFor["Charmander"], false));

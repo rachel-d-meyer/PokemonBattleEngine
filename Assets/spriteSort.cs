@@ -162,6 +162,14 @@ public class spriteSort : MonoBehaviour
             {
                 spriteStuff.Add("Nidoking", t);
             }
+            else if (t.name.Equals("248"))
+            {
+                spriteStuff.Add("Tyranitar", t);
+            }
+            else if (t.name.Equals("094"))
+            {
+                spriteStuff.Add("Gengar", t);
+            }
         }
 
 
