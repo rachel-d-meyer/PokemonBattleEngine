@@ -43,6 +43,26 @@ class PokeDex
         _pokemon.Add(new Pokemon("Tentacruel", "Water", movesFor["Tentacruel"], statsFor["Tentacruel"], true));
         _pokemon.Add(new Pokemon("Venusaur", "Grass", movesFor["Venusaur"], statsFor["Venusaur"], true));
         _pokemon.Add(new Pokemon("Vulpix", "Fire", movesFor["Vulpix"], statsFor["Vulpix"], true));
+        _pokemon.Add(new Pokemon("Tyranitar", "Rock", movesFor["Tyranitar"], statsFor["Tyranitar"], true));
+        _pokemon.Add(new Pokemon("Gengar", "Ghost", movesFor["Gengar"], statsFor["Gengar"], true));
+        _pokemon.Add(new Pokemon("Slaking", "Normal", movesFor["Slaking"], statsFor["Slaking"], true));
+        _pokemon.Add(new Pokemon("Metagross", "Steel", movesFor["Metagross"], statsFor["Metagross"], true));
+        _pokemon.Add(new Pokemon("Archeops", "Flying", movesFor["Archeops"], statsFor["Archeops"], true));
+        _pokemon.Add(new Pokemon("Blissey", "Normal", movesFor["Blissey"], statsFor["Blissey"], true));
+        _pokemon.Add(new Pokemon("Umbreon", "Dark", movesFor["Umbreon"], statsFor["Umbreon"], true));
+        _pokemon.Add(new Pokemon("Hippowdon", "Ground", movesFor["Hippowdon"], statsFor["Hippowdon"], true));
+        _pokemon.Add(new Pokemon("Sylveon", "Fairy", movesFor["Sylveon"], statsFor["Sylveon"], true));
+        _pokemon.Add(new Pokemon("Nidoking", "Poison", movesFor["Nidoking"], statsFor["Nidoking"], true));
+        _pokemon.Add(new Pokemon("Heracross", "Bug", movesFor["Heracross"], statsFor["Heracross"], true));
+
+
+
+
+
+
+
+
+
 
     }
 

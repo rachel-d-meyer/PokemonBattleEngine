@@ -72,6 +72,34 @@ class MoveList
         _moves.Add(new Move(60, "Sludge Bomb", "Poison", 90, "Damage", "S"));
         _moves.Add(new Move(61, "Energy Ball", "Grass", 90, "Damage", "S"));
         _moves.Add(new Move(62, "Dark Pulse", "Dark", 80, "Damage", "S"));
+        _moves.Add(new Move(63, "Crunch", "Dark", 80, "Damage", "P"));
+        _moves.Add(new Move(64, "Fire Punch", "Fire", 75, "Damage", "P"));
+        _moves.Add(new Move(65, "Icy Wind", "Ice", 55, "Damage", "S"));
+        _moves.Add(new Move(66, "Focus Blast", "Fighting", 120, "Damage", "S"));
+        _moves.Add(new Move(67, "Meteor Mash", "Steel", 90, "Damage", "P"));
+        _moves.Add(new Move(68, "Foul Play", "Dark", 95, "Foe", "P"));
+        _moves.Add(new Move(69, "Bug Bite", "Bug", 60, "Damage", "P"));
+        _moves.Add(new Move(70, "Swords Dance", "Null", 0, "AUp2", "null"));
+        _moves.Add(new Move(71, "Aerial Ace", "Flying", 60, "Damage", "P"));
+        _moves.Add(new Move(72, "Struggle Bug", "Bug", 50, "FSpADown", "S"));
+        _moves.Add(new Move(73, "Dazzling Gleam", "Fairy", 80, "Damage", "S"));
+        _moves.Add(new Move(74, "Defense Curl", "Null", 0, "DUp", "null"));
+        _moves.Add(new Move(75, "Soft Boiled", "Null", 0, "Heal", "null"));
+        _moves.Add(new Move(76, "Seismic Toss", "Fighting", 0, "Damage", "P"));
+        _moves.Add(new Move(77, "Draining Kiss", "Fairy", 50, "Leech", "S"));
+        _moves.Add(new Move(78, "Quick Attack", "Normal", 40, "Priority", "P"));
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

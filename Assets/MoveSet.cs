@@ -9,7 +9,7 @@ class MoveSet
 
    enum move
     {
-        Vine_Whip,Ember,Tackle,Scratch,Headbutt,Watergun,Flamethrower,Bite,Flame_Wheel,Aqua_Jet,Swift,Giga_Drain,Synthesis,Aura_Sphere,Brick_Break,Dragon_Pulse,Metal_Claw,Spark,Discharge,Sonic_Boom,Bulldoze,Stomp,Rock_Slide,Dragon_Claw,Dragon_Breath,Earth_Power,Thunder_Fang,Shadow_Ball,Wing_Attack,Fire_Fang,Power_Up_Punch,Bullet_Punch,Drain_Punch,Thunder_Punch,Close_Combat,Bulk_Up,Rolling_Kick,Freeze_Dry,Ice_Beam,Ice_Shard,Hidden_Power_Fire,Cross_Chop,Poison_Jab,Splash,Flail,Celebrate,Psychic,Calm_Mind,Magical_Leaf,Light_Screen,Nasty_Plot,Hyper_Voice,Hidden_Power_Ghost,Slash,Waterfall,Recover,Signal_Beam,Ice_Punch,Sludge_Wave,Bubble_Beam,Sludge_Bomb,Energy_Ball,Dark_Pulse
+        Vine_Whip,Ember,Tackle,Scratch,Headbutt,Watergun,Flamethrower,Bite,Flame_Wheel,Aqua_Jet,Swift,Giga_Drain,Synthesis,Aura_Sphere,Brick_Break,Dragon_Pulse,Metal_Claw,Spark,Discharge,Sonic_Boom,Bulldoze,Stomp,Rock_Slide,Dragon_Claw,Dragon_Breath,Earth_Power,Thunder_Fang,Shadow_Ball,Wing_Attack,Fire_Fang,Power_Up_Punch,Bullet_Punch,Drain_Punch,Thunder_Punch,Close_Combat,Bulk_Up,Rolling_Kick,Freeze_Dry,Ice_Beam,Ice_Shard,Hidden_Power_Fire,Cross_Chop,Poison_Jab,Splash,Flail,Celebrate,Psychic,Calm_Mind,Magical_Leaf,Light_Screen,Nasty_Plot,Hyper_Voice,Hidden_Power_Ghost,Slash,Waterfall,Recover,Signal_Beam,Ice_Punch,Sludge_Wave,Bubble_Beam,Sludge_Bomb,Energy_Ball,Dark_Pulse,Crunch,Fire_Punch,Icy_Wind,Focus_Blast,Meteor_Mash,Foul_Play,Bug_Bite,Swords_Dance,Aerial_Ace,Struggle_Bug,Dazzling_Gleam,Def_Curl,Soft_Boiled,Seismic_Toss,Draining_Kiss,Quick_Attack
     }
 
     protected MoveSet()
@@ -43,7 +43,17 @@ class MoveSet
         List<Move> tentacruel = new List<Move>();
         List<Move> venusaur = new List<Move>();
         List<Move> vulpix = new List<Move>();
-        
+        List<Move> tyranitar = new List<Move>();
+        List<Move> gengar = new List<Move>();
+        List<Move> metagross = new List<Move>();
+        List<Move> umbreon = new List<Move>();
+        List<Move> heracross = new List<Move>();
+        List<Move> slaking = new List<Move>();
+        List<Move> blissey = new List<Move>();
+        List<Move> sylveon = new List<Move>();
+        List<Move> archeops = new List<Move>();
+        List<Move> nidoking = new List<Move>();
+        List<Move> hippowdon = new List<Move>();
         
 
         foreach (Move m in moves)
@@ -81,6 +91,7 @@ class MoveSet
                 charmander.Add(m);
                 marshtomp.Add(m);
                 turtwig.Add(m);
+                slaking.Add(m);
                 
             }
             if(m.ID == (int)move.Watergun)
@@ -100,6 +111,7 @@ class MoveSet
                 arcanine.Add(m);
                 turtwig.Add(m);
                 squirtle.Add(m);
+                umbreon.Add(m);
             }
             if(m.ID == (int)move.Flame_Wheel)
             {
@@ -135,6 +147,7 @@ class MoveSet
                 lucario.Add(m);
                 rhyperior.Add(m);
                 poliwrath.Add(m);
+                slaking.Add(m);
             }
             if(m.ID == (int)move.Dragon_Pulse)
             {
@@ -160,6 +173,8 @@ class MoveSet
             if(m.ID == (int)move.Bulldoze)
             {
                 rhyperior.Add(m);
+                tyranitar.Add(m);
+                hippowdon.Add(m);
             }
             if(m.ID == (int)move.Stomp)
             {
@@ -170,19 +185,25 @@ class MoveSet
                 rhyperior.Add(m);
                 hitmonlee.Add(m);
                 machop.Add(m);
+                tyranitar.Add(m);
+                metagross.Add(m);
+                hippowdon.Add(m);
             }
             if(m.ID == (int)move.Dragon_Claw)
             {
                 flygon.Add(m);
                 charizard.Add(m);
+                archeops.Add(m);
             }
             if(m.ID == (int)move.Dragon_Breath)
             {
                 flygon.Add(m);
+                
             }
             if(m.ID == (int)move.Earth_Power)
             {
                 flygon.Add(m);
+                nidoking.Add(m);
             }
             if(m.ID == (int)move.Thunder_Fang)
             {
@@ -191,6 +212,9 @@ class MoveSet
             if(m.ID == (int)move.Shadow_Ball)
             {
                 jolteon.Add(m);
+                gengar.Add(m);
+                umbreon.Add(m);
+                sylveon.Add(m);
             }
             if(m.ID == (int)move.Wing_Attack)
             {
@@ -199,6 +223,7 @@ class MoveSet
             if(m.ID == (int)move.Fire_Fang)
             {
                 charizard.Add(m);
+                hippowdon.Add(m);
             }
             if(m.ID == (int)move.Power_Up_Punch)
             {
@@ -209,6 +234,7 @@ class MoveSet
             {
                 hitmonchan.Add(m);
                 machop.Add(m);
+                metagross.Add(m);
             }
             if(m.ID == (int)move.Drain_Punch)
             {
@@ -241,6 +267,7 @@ class MoveSet
                 mewtwo.Add(m);
                 porygon.Add(m);
                 blastoise.Add(m);
+                nidoking.Add(m);
             }
             if(m.ID == (int)move.Ice_Shard)
             {
@@ -260,6 +287,7 @@ class MoveSet
             {
                 machop.Add(m);
                 tentacruel.Add(m);
+                nidoking.Add(m);
             }
             if(m.ID == (int)move.Splash)
             {
@@ -325,10 +353,13 @@ class MoveSet
             if(m.ID == (int)move.Ice_Punch)
             {
                 squirtle.Add(m);
+                metagross.Add(m);
             }
             if(m.ID == (int)move.Sludge_Wave)
             {
                 tentacruel.Add(m);
+                gengar.Add(m);
+                nidoking.Add(m);
             }
             if (m.ID == (int)move.Bubble_Beam)
             {
@@ -346,6 +377,23 @@ class MoveSet
             {
                 vulpix.Add(m);
                 blastoise.Add(m);
+            }
+            if(m.ID == (int)move.Crunch)
+            {
+                tyranitar.Add(m);
+                hippowdon.Add(m);
+            }
+            if(m.ID == (int)move.Fire_Punch)
+            {
+                tyranitar.Add(m);
+            }
+            if(m.ID == (int)move.Icy_Wind)
+            {
+                gengar.Add(m);
+            }
+            if(m.ID == (int)move.Focus_Blast)
+            {
+                gengar.Add(m);
             }
 
         }
@@ -377,7 +425,8 @@ class MoveSet
         _moveset.Add("Tentacruel", tentacruel);
         _moveset.Add("Venusaur", venusaur);
         _moveset.Add("Vulpix", vulpix);
-
+        _moveset.Add("Tyranitar", tyranitar);
+        _moveset.Add("Gengar", gengar);
       
 
     }
