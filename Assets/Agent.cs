@@ -178,7 +178,7 @@ public class Agent : MonoBehaviour
             }
             foreach (Move m in a.P.Moves)
             {
-                if (m.Info.Equals("First"))
+                if (m.Info == Move.InfoType.FIRST)
                 {
                     AddAgentNode(parent, m);
                 }
@@ -193,7 +193,7 @@ public class Agent : MonoBehaviour
             }
             foreach (Move m in p.P.Moves)
             {
-                if (m.Info.Equals("First"))
+                if (m.Info == Move.InfoType.FIRST)
                 {
                     AddPlayerNode(parent, m);
                 }
@@ -214,7 +214,7 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in a.P.Moves)
             {
-                if (!(m.Info.Equals("First")))
+                if (m.Info != Move.InfoType.FIRST)
                 {
                     AddAgentNode(parent, m);
                 }
@@ -225,7 +225,7 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in p.P.Moves)
             {
-                if (!m.Info.Equals("First"))
+                if (m.Info != Move.InfoType.FIRST)
                 {
                     AddPlayerNode(parent, m);
                 }
@@ -236,7 +236,7 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in a.P.Moves)
             {
-                if (!m.Info.Equals("First"))
+                if (m.Info != Move.InfoType.FIRST)
                 {
                     AddAgentNode(parent, m);
                 }
@@ -254,7 +254,7 @@ public class Agent : MonoBehaviour
 
             foreach (Move m in p.P.Moves)
             {
-                if (!m.Info.Equals("First"))
+                if (m.Info != Move.InfoType.FIRST)
                 {
                     AddPlayerNode(parent, m);
                 }
@@ -701,7 +701,7 @@ public class Agent : MonoBehaviour
     {
         foreach (Move m in p.P.Moves)
         {
-            if (m.Info.Equals("First"))
+            if (m.Info == Move.InfoType.FIRST)
             {
                 return true;
 
@@ -715,7 +715,7 @@ public class Agent : MonoBehaviour
     {
         foreach (Move m in a.P.Moves)
         {
-            if (m.Info.Equals("First"))
+            if (m.Info == Move.InfoType.FIRST)
             {
                 return true;
             }

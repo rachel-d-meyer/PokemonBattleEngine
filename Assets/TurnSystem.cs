@@ -66,11 +66,11 @@ public class TurnSystem : MonoBehaviour
 
         if (fcHP > 0 && cHP > 0)
         {
-            if (pmove.Info.Equals("First") && !(fmove.Info.Equals("First")))
+            if (pmove.Info == Move.InfoType.FIRST && fmove.Info != Move.InfoType.FIRST)
             {
                 first = true;
             }
-            else if (fmove.Info.Equals("First") && !(pmove.Info.Equals("First")))
+            else if (fmove.Info == Move.InfoType.FIRST && pmove.Info != Move.InfoType.FIRST)
             {
                 first = false;
             }
@@ -190,7 +190,7 @@ public class TurnSystem : MonoBehaviour
             mod = mod * 1.5;
         }
 
-        if (!m.Info.Equals("Heal") && !m.Type.Equals("Null"))
+        if (m.Info != Move.InfoType.HEAL && !m.Type.Equals("Null"))
         {
             double typeA = 0;
             double typeD = 0;
@@ -218,7 +218,7 @@ public class TurnSystem : MonoBehaviour
                 {
                     typeA = a.P.Stats[0].Atk * aM;
                     typeD = d.P.Stats[0].Def * fdM;
-                    if (m.Info.Equals("Foe"))
+                    if (m.Info == Move.InfoType.FOE)
                     {
                         typeA = d.P.Stats[0].Atk * faM;
                     }
@@ -227,7 +227,7 @@ public class TurnSystem : MonoBehaviour
                 {
                     typeA = a.P.Stats[0].Atk * faM;
                     typeD = d.P.Stats[0].Def * dM;
-                    if (m.Info.Equals("Foe"))
+                    if (m.Info == Move.InfoType.FOE)
                     {
                         typeA = a.P.Stats[0].Atk * aM;
                     }
@@ -246,42 +246,40 @@ public class TurnSystem : MonoBehaviour
             }
             if (a.Equals(pActive))
             {
-                if (m.Info.Equals("Drain"))
+                switch (m.Info)
                 {
-                    cHP = cHP + (damage / 2);
+                    case Move.InfoType.DRAIN:
+                        cHP = cHP + (damage / 2);
+                        if (cHP > a.P.Stats[0].HP)
+                        {
+                            cHP = a.P.Stats[0].HP;
+                        }
+                        pSlider.value = cHP;
+                        sliderUpdate(pSlider, pImage, a.P);
+                        break;
 
-                    if (cHP > a.P.Stats[0].HP)
-                    {
-                        cHP = a.P.Stats[0].HP;
-                    }
-                    pSlider.value = cHP;
-                    sliderUpdate(pSlider, pImage, a.P);
+                    case Move.InfoType.LEECH:
+                        cHP = cHP + (int)(damage / 1.5);
+                        if (cHP > a.P.Stats[0].HP)
+                        {
+                            cHP = a.P.Stats[0].HP;
+                        }
+                        pSlider.value = cHP;
+                        sliderUpdate(pSlider, pImage, a.P);
+                        break;
 
-                }
-                else if (m.Info.Equals("Leech"))
-                {
-                    cHP = cHP + (int)(damage / 1.5);
-                    if (cHP > a.P.Stats[0].HP)
-                    {
-                        cHP = a.P.Stats[0].HP;
-                    }
-                    pSlider.value = cHP;
-                    sliderUpdate(pSlider, pImage, a.P);
-                }
-             
-                else if (m.Info.Equals("AUp"))
-                {
-                    aM = modIncrease(aM, 1);
-                }
-                else if (m.Info.Equals("DDownSpDDown"))
-                {
-                    dM = modDecrease(dM, 1);
-                    spdM = modDecrease(spdM, 1);
-                    
-                }
-                else if (m.Info.Equals("FSpADown"))
-                {
-                    fspaM = modDecrease(fspaM, 1);
+                    case Move.InfoType.ATTACK_UP:
+                        aM = modIncrease(aM, 1);
+                        break;
+
+                    case Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN:
+                        dM = modDecrease(dM, 1);
+                        spdM = modDecrease(spdM, 1);
+                        break;
+
+                    case Move.InfoType.FOE_SPECIAL_ATTACK_DOWN:
+                        fspaM = modDecrease(fspaM, 1);
+                        break;
                 }
                 
 
@@ -296,41 +294,40 @@ public class TurnSystem : MonoBehaviour
             }
             else
             {
+                switch (m.Info)
+                {
+                    case Move.InfoType.DRAIN:
+                        fcHP = fcHP + (damage / 2);
+                        if (fcHP > a.P.Stats[0].HP)
+                        {
+                            fcHP = a.P.Stats[0].HP;
+                        }
+                        fSlider.value = fcHP;
+                        sliderUpdate(fSlider, fImage, a.P);
+                        break;
 
-                if (m.Info.Equals("Drain"))
-                {
-                    fcHP = fcHP + (damage / 2);
+                    case Move.InfoType.LEECH:
+                        fcHP = fcHP + (int)(damage / 1.5);
+                        if (fcHP > a.P.Stats[0].HP)
+                        {
+                            fcHP = a.P.Stats[0].HP;
+                        }
+                        fSlider.value = fcHP;
+                        sliderUpdate(fSlider, fImage, a.P);
+                        break;
 
-                    if (fcHP > a.P.Stats[0].HP)
-                    {
-                        fcHP = a.P.Stats[0].HP;
-                    }
-                    fSlider.value = fcHP;
-                    sliderUpdate(fSlider, fImage, a.P);
+                    case Move.InfoType.ATTACK_UP:
+                        faM = modIncrease(faM, 1);
+                        break;
 
-                }
-                else if (m.Info.Equals("Leech"))
-                {
-                    fcHP = fcHP + (int)(damage / 1.5);
-                    if (fcHP > a.P.Stats[0].HP)
-                    {
-                        fcHP = a.P.Stats[0].HP;
-                    }
-                    fSlider.value = fcHP;
-                    sliderUpdate(fSlider, fImage, a.P);
-                }
-                else if (m.Info.Equals("AUp"))
-                {
-                    faM = modIncrease(faM, 1);
-                }
-                else if (m.Info.Equals("DDownSpDDown"))
-                {
-                    fdM = modDecrease(fdM, 1);
-                    fspdM = modDecrease(fspdM, 1);
-                }
-                else if (m.Info.Equals("FSpADown"))
-                {
-                    spaM = modDecrease(spaM, 1);
+                    case Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN:
+                        fdM = modDecrease(fdM, 1);
+                        fspdM = modDecrease(fspdM, 1);
+                        break;
+
+                    case Move.InfoType.FOE_SPECIAL_ATTACK_DOWN:
+                        spaM = modDecrease(spaM, 1);
+                        break;
                 }
 
                 cHP = cHP - damage;
@@ -346,7 +343,7 @@ public class TurnSystem : MonoBehaviour
             }
         }
        
-        else if (m.Info.Equals("Heal"))
+        else if (m.Info == Move.InfoType.HEAL)
         {
             if (a.Equals(pActive))
             {
@@ -370,7 +367,7 @@ public class TurnSystem : MonoBehaviour
                 sliderUpdate(fSlider, fImage, a.P);
             }
         }
-        else if (m.Info.Equals("AUp2"))
+        else if (m.Info == Move.InfoType.ATTACK_UP_2)
         {
             if (a.Equals(pActive))
             {
@@ -381,7 +378,7 @@ public class TurnSystem : MonoBehaviour
                 faM = modIncrease(faM, 2);
             }
         }
-        else if (m.Info.Equals("DUp"))
+        else if (m.Info == Move.InfoType.DEFENCE_UP)
         {
             if (a.Equals(pActive))
             {
@@ -394,7 +391,7 @@ public class TurnSystem : MonoBehaviour
         }
         else
         {
-            if (m.Info.Equals("AUpDUp"))
+            if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
             {
                 if (a.Equals(pActive))
                 {
@@ -407,7 +404,7 @@ public class TurnSystem : MonoBehaviour
                     fdM = modIncrease(fdM, 1);
                 }
             }
-            else if (m.Info.Equals("SpAUpSpDUp"))
+            else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
             {
                 if (a.Equals(pActive))
                 {
@@ -420,7 +417,7 @@ public class TurnSystem : MonoBehaviour
                     fspdM = modIncrease(fspdM, 1);
                 }
             }
-            else if (m.Info.Equals("SpAUp2"))
+            else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
             {
                 if (a.Equals(pActive))
                 {
@@ -508,21 +505,21 @@ public class TurnSystem : MonoBehaviour
 
     void extraText(Move m, Pokemon a, int i)
     {
-        if (m.Info.Equals("DDownSpDDown"))
+        if (m.Info == Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN)
         {
             b.sentences[i] = a.Name + " used" + m.Name + ".It's Defense and Special Defense fell!";
         }
-        else if (m.Info.Equals("AUpDUp"))
+        else if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
         {
             b.sentences[i] = a.Name + " used" + m.Name + ".It's Attack and Defense rose!";
 
         }
-        else if (m.Info.Equals("SpAUpSpDUp"))
+        else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
         {
             b.sentences[i] = a.Name + " used" + m.Name + ".It's Special Attack and Special Defense rose!";
 
         }
-        else if (m.Info.Equals("SpAUp2"))
+        else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
         {
             b.sentences[i] = a.Name + " used" + m.Name + ".It's Special Attack rose sharply!";
 

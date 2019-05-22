@@ -35,7 +35,7 @@ public class DamageCalculator
                 mod = mod * 1.5;
             }
 
-            if (!m.Info.Equals("Heal") && !m.Type.Equals("Null"))
+            if (m.Info != Move.InfoType.HEAL && !m.Type.Equals("Null"))
             {
                 double typeA = 0;
                 double typeD = 0;
@@ -61,7 +61,7 @@ public class DamageCalculator
                     damage = 20;
                 }
 
-                if (m.Info.Equals("Drain"))
+                if (m.Info == Move.InfoType.DRAIN)
                 {
                     aStats.hp = aStats.hp + (damage / 2);
 
@@ -73,11 +73,11 @@ public class DamageCalculator
 
 
                     
-                    else if (m.Info.Equals("AUp"))
+                    else if (m.Info == Move.InfoType.ATTACK_UP)
                     {
                         aStats.attack = (int)modIncrease(aStats.attack, 1);
                     }
-                    else if (m.Info.Equals("DDownSpDDown"))
+                    else if (m.Info == Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN)
                     {
                         aStats.defence = modDecrease(aStats.defence, 1);
                         aStats.specialDefence = modDecrease(aStats.specialDefence, 1);
@@ -96,7 +96,7 @@ public class DamageCalculator
 
             }
 
-            else if (m.Info.Equals("Heal"))
+            else if (m.Info == Move.InfoType.HEAL)
             {
 
                 aStats.hp = aStats.hp + (a.P.Stats[0].HP / 2);
@@ -112,14 +112,14 @@ public class DamageCalculator
             {
 
 
-                if (m.Info.Equals("AUpDUp"))
+                if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
                 {
 
                     aStats.attack = modIncrease(aStats.attack, 1);
                     aStats.defence = modIncrease(aStats.defence, 1);
 
                 }
-                else if (m.Info.Equals("SpAUpSpDUp"))
+                else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
                 {
 
                     aStats.specialAttack = modIncrease(aStats.specialAttack, 1);
@@ -127,13 +127,9 @@ public class DamageCalculator
 
 
                 }
-                else if (m.Info.Equals("SpAUp2"))
+                else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
                 {
-
-
                     aStats.specialAttack = modIncrease(aStats.specialAttack, 2);
-
-
                 }
                 else
                 {
