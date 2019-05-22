@@ -327,6 +327,9 @@ public class Battle : MonoBehaviour
     //Update the UI
     void updateScreen()
     {
+
+        PokeDex test = PokeDex.GetPokeDex();
+        List<Pokemon> dexList = test.GetPokemon;
         List<Pokemon> pokemon = dex.GetPokemon;
 
         int count = 0;

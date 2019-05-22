@@ -63,6 +63,8 @@
   <ItemGroup>
     <Compile Include="Assets\ActivePokemon.cs" />
     <Compile Include="Assets\Agent.cs" />
+    <Compile Include="Assets\BaseStat.cs" />
+    <Compile Include="Assets\BaseStats.cs" />
     <Compile Include="Assets\Battle.cs" />
     <Compile Include="Assets\battleText.cs" />
     <Compile Include="Assets\DamageCalculator.cs" />

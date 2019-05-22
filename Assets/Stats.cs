@@ -38,6 +38,17 @@ class Stats {
         _stats.Add("Tentacruel", new List<Stat> { new Stat(HPCalc(80), statCalc(70), statCalc(65), statCalc(80), statCalc(120), statCalc(100)) });
         _stats.Add("Venusaur", new List<Stat> { new Stat(HPCalc(80), statCalc(82), statCalc(83), statCalc(100), statCalc(100), statCalc(80)) });
         _stats.Add("Vulpix", new List<Stat> { new Stat(HPCalc(38), statCalc(41), statCalc(40), statCalc(50), statCalc(65), statCalc(65)) });
+        _stats.Add("Gengar", new List<Stat> { new Stat(HPCalc(60), statCalc(65), statCalc(60), statCalc(130), statCalc(75), statCalc(110)) });
+        _stats.Add("Tyranitar", new List<Stat> { new Stat(HPCalc(100), statCalc(134), statCalc(110), statCalc(95), statCalc(100), statCalc(61)) });
+        _stats.Add("Metagross", new List<Stat> { new Stat(HPCalc(80), statCalc(135), statCalc(130), statCalc(95), statCalc(90), statCalc(70)) });
+        _stats.Add("Umbreon", new List<Stat> { new Stat(HPCalc(95), statCalc(65), statCalc(110), statCalc(60), statCalc(130), statCalc(65)) });
+        _stats.Add("Heracross", new List<Stat> { new Stat(HPCalc(80), statCalc(125), statCalc(75), statCalc(40), statCalc(95), statCalc(85)) });
+        _stats.Add("Slaking", new List<Stat> { new Stat(HPCalc(150), statCalc(160), statCalc(100), statCalc(95), statCalc(65), statCalc(100)) });
+        _stats.Add("Blissey", new List<Stat> { new Stat(HPCalc(255), statCalc(10), statCalc(10), statCalc(75), statCalc(135), statCalc(55)) });
+        _stats.Add("Sylveon", new List<Stat> { new Stat(HPCalc(95), statCalc(65), statCalc(65), statCalc(110), statCalc(130), statCalc(60)) });
+        _stats.Add("Archeops", new List<Stat> { new Stat(HPCalc(75), statCalc(140), statCalc(65), statCalc(112), statCalc(65), statCalc(110)) });
+        _stats.Add("Nidoking", new List<Stat> { new Stat(HPCalc(81), statCalc(102), statCalc(77), statCalc(85), statCalc(75), statCalc(85)) });
+        _stats.Add("Hippowdon", new List<Stat> { new Stat(HPCalc(108), statCalc(112), statCalc(118), statCalc(68), statCalc(72), statCalc(47)) });
 
     }
 

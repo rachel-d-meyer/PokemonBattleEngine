@@ -118,6 +118,50 @@ public class spriteSort : MonoBehaviour
             {
                 spriteStuff.Add("Persian", t);
             }
+            else if (t.name.Equals("248"))
+            {
+                spriteStuff.Add("Tyranitar", t);
+            }
+            else if (t.name.Equals("094"))
+            {
+                spriteStuff.Add("Gengar", t);
+            }
+            else if (t.name.Equals("700"))
+            {
+                spriteStuff.Add("Sylveon", t);
+            }
+            else if (t.name.Equals("567"))
+            {
+                spriteStuff.Add("Archeops", t);
+            }
+            else if (t.name.Equals("450"))
+            {
+                spriteStuff.Add("Hippowdon", t);
+            }
+            else if (t.name.Equals("376"))
+            {
+                spriteStuff.Add("Metagross", t);
+            }
+            else if (t.name.Equals("289"))
+            {
+                spriteStuff.Add("Slaking", t);
+            }
+            else if (t.name.Equals("242"))
+            {
+                spriteStuff.Add("Blissey", t);
+            }
+            else if (t.name.Equals("214"))
+            {
+                spriteStuff.Add("Heracross", t);
+            }
+            else if (t.name.Equals("197"))
+            {
+                spriteStuff.Add("Umbreon", t);
+            }
+            else if (t.name.Equals("034"))
+            {
+                spriteStuff.Add("Nidoking", t);
+            }
         }
 
 

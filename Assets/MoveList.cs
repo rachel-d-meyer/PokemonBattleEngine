@@ -88,6 +88,7 @@ class MoveList
         _moves.Add(new Move(76, "Seismic Toss", "Fighting", 0, "Damage", "P"));
         _moves.Add(new Move(77, "Draining Kiss", "Fairy", 50, "Leech", "S"));
         _moves.Add(new Move(78, "Quick Attack", "Normal", 40, "Priority", "P"));
+        _moves.Add(new Move(79, "Moonlight", "Null", 0, "Heal", "null"));
 
 
 

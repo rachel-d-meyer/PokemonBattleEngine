@@ -9,7 +9,7 @@ class MoveSet
 
    enum move
     {
-        Vine_Whip,Ember,Tackle,Scratch,Headbutt,Watergun,Flamethrower,Bite,Flame_Wheel,Aqua_Jet,Swift,Giga_Drain,Synthesis,Aura_Sphere,Brick_Break,Dragon_Pulse,Metal_Claw,Spark,Discharge,Sonic_Boom,Bulldoze,Stomp,Rock_Slide,Dragon_Claw,Dragon_Breath,Earth_Power,Thunder_Fang,Shadow_Ball,Wing_Attack,Fire_Fang,Power_Up_Punch,Bullet_Punch,Drain_Punch,Thunder_Punch,Close_Combat,Bulk_Up,Rolling_Kick,Freeze_Dry,Ice_Beam,Ice_Shard,Hidden_Power_Fire,Cross_Chop,Poison_Jab,Splash,Flail,Celebrate,Psychic,Calm_Mind,Magical_Leaf,Light_Screen,Nasty_Plot,Hyper_Voice,Hidden_Power_Ghost,Slash,Waterfall,Recover,Signal_Beam,Ice_Punch,Sludge_Wave,Bubble_Beam,Sludge_Bomb,Energy_Ball,Dark_Pulse,Crunch,Fire_Punch,Icy_Wind,Focus_Blast,Meteor_Mash,Foul_Play,Bug_Bite,Swords_Dance,Aerial_Ace,Struggle_Bug,Dazzling_Gleam,Def_Curl,Soft_Boiled,Seismic_Toss,Draining_Kiss,Quick_Attack
+        Vine_Whip,Ember,Tackle,Scratch,Headbutt,Watergun,Flamethrower,Bite,Flame_Wheel,Aqua_Jet,Swift,Giga_Drain,Synthesis,Aura_Sphere,Brick_Break,Dragon_Pulse,Metal_Claw,Spark,Discharge,Sonic_Boom,Bulldoze,Stomp,Rock_Slide,Dragon_Claw,Dragon_Breath,Earth_Power,Thunder_Fang,Shadow_Ball,Wing_Attack,Fire_Fang,Power_Up_Punch,Bullet_Punch,Drain_Punch,Thunder_Punch,Close_Combat,Bulk_Up,Rolling_Kick,Freeze_Dry,Ice_Beam,Ice_Shard,Hidden_Power_Fire,Cross_Chop,Poison_Jab,Splash,Flail,Celebrate,Psychic,Calm_Mind,Magical_Leaf,Light_Screen,Nasty_Plot,Hyper_Voice,Hidden_Power_Ghost,Slash,Waterfall,Recover,Signal_Beam,Ice_Punch,Sludge_Wave,Bubble_Beam,Sludge_Bomb,Energy_Ball,Dark_Pulse,Crunch,Fire_Punch,Icy_Wind,Focus_Blast,Meteor_Mash,Foul_Play,Bug_Bite,Swords_Dance,Aerial_Ace,Struggle_Bug,Dazzling_Gleam,Def_Curl,Soft_Boiled,Seismic_Toss,Draining_Kiss,Quick_Attack,Moonlight
     }
 
     protected MoveSet()
@@ -360,6 +360,7 @@ class MoveSet
                 tentacruel.Add(m);
                 gengar.Add(m);
                 nidoking.Add(m);
+                
             }
             if (m.ID == (int)move.Bubble_Beam)
             {
@@ -382,10 +383,12 @@ class MoveSet
             {
                 tyranitar.Add(m);
                 hippowdon.Add(m);
+                archeops.Add(m);
             }
             if(m.ID == (int)move.Fire_Punch)
             {
                 tyranitar.Add(m);
+                slaking.Add(m);
             }
             if(m.ID == (int)move.Icy_Wind)
             {
@@ -395,6 +398,64 @@ class MoveSet
             {
                 gengar.Add(m);
             }
+            if(m.ID == (int)move.Meteor_Mash)
+            {
+                metagross.Add(m);
+            }
+            if(m.ID == (int)move.Foul_Play)
+            {
+                umbreon.Add(m);
+            }
+            if(m.ID == (int)move.Moonlight)
+            {
+                umbreon.Add(m);
+            }
+            if (m.ID == (int)move.Bug_Bite)
+            {
+                heracross.Add(m);
+            }
+            if(m.ID == (int)move.Struggle_Bug)
+            {
+                heracross.Add(m);
+            }
+            if(m.ID == (int)move.Aerial_Ace)
+            {
+                heracross.Add(m);
+                slaking.Add(m);
+                archeops.Add(m);
+            }
+            if(m.ID == (int)move.Swords_Dance)
+            {
+                heracross.Add(m);
+            }
+            if(m.ID == (int)move.Dazzling_Gleam)
+            {
+                blissey.Add(m);
+                sylveon.Add(m);
+            }
+            if(m.ID == (int)move.Def_Curl)
+            {
+                blissey.Add(m);
+            
+            }
+            if(m.ID == (int)move.Soft_Boiled)
+            {
+                blissey.Add(m);
+            }
+            if(m.ID == (int)move.Seismic_Toss)
+            {
+                blissey.Add(m);
+            }
+            if(m.ID == (int)move.Draining_Kiss)
+            {
+                sylveon.Add(m);
+            }
+            if(m.ID == (int)move.Quick_Attack)
+            {
+                sylveon.Add(m);
+                archeops.Add(m);
+            }
+
 
         }
 
@@ -427,6 +488,15 @@ class MoveSet
         _moveset.Add("Vulpix", vulpix);
         _moveset.Add("Tyranitar", tyranitar);
         _moveset.Add("Gengar", gengar);
+        _moveset.Add("Slaking", slaking);
+        _moveset.Add("Umbreon", umbreon);
+        _moveset.Add("Metagross", metagross);
+        _moveset.Add("Blissey", blissey);
+        _moveset.Add("Archeops", archeops);
+        _moveset.Add("Sylveon", sylveon);
+        _moveset.Add("Hippowdon", hippowdon);
+        _moveset.Add("Nidoking", nidoking);
+        _moveset.Add("Heracross", heracross);
       
 
     }
