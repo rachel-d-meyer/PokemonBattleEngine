@@ -10,10 +10,8 @@ public class Agent : MonoBehaviour
     public List<Node> Nodes = new List<Node>();
     public ActivePokemon p;
     public ActivePokemon a;
-    public Stat startpStats;
-    public Stat startaStats;
-    public Stat agentStats;
-    public Stat playerStats;
+    public Stat startpStats = null;
+    public Stat startaStats = null;
     List<Node> testList = new List<Node>();
     List<Node> holderList = new List<Node>();
     List<Node> filledNodes = new List<Node>();
@@ -26,11 +24,9 @@ public class Agent : MonoBehaviour
         Nodes.Clear();
         p = P;
         a = A;
-        startpStats.CopyFrom(PStats);
-        startaStats.CopyFrom(AStats);
-
-        agentStats = AStats;
-        playerStats = PStats;
+        Debug.Log(PStats.hp);
+        startpStats = PStats.Copy();
+        startaStats = AStats.Copy();
 
         //Add the inital Node.
         Nodes.Add(new Node(0, new Move(), new ActivePokemon(), null, null, new int(), new List<int>(), new int(), 0, -1000, 1000));
@@ -508,10 +504,8 @@ public class Agent : MonoBehaviour
         }
         else
         {
-            agentStats.CopyFrom(startaStats);
-            agentsStats.CopyFrom(startaStats);
-            playerStats.CopyFrom(startpStats);
-            playersStats.CopyFrom(startpStats);
+            agentsStats = startaStats.Copy();
+            playersStats = startpStats.Copy();
         }
 
         List<Stat> result = DamageCalculator.calc(m, a, p, agentsStats, playersStats);
@@ -522,7 +516,7 @@ public class Agent : MonoBehaviour
         double playerHP = (playersStats.hp / p.P.Stats[0].HP) * 100;
         int value = (int)(agentHP - playerHP);
         int ID = Nodes.Count;
-        Nodes.Add(new Node(ID, m, a, agentsStats.Copy(), playerStats.Copy(), parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
+        Nodes.Add(new Node(ID, m, a, agentsStats.Copy(), playersStats.Copy(), parent, new List<int>(), value, (parentNode.Depth + 1), -1000, 1000));
         updateParent(parentNode, ID);
     }
 
@@ -560,8 +554,8 @@ public class Agent : MonoBehaviour
         }
         else
         {
-            agentsStats.CopyFrom(startaStats);
-            playersStats.CopyFrom(startpStats);
+            agentsStats = startaStats.Copy();
+            playersStats = startpStats.Copy();
         }
 
         List<Stat> result = DamageCalculator.calc(m, p, a, playersStats, agentsStats);
