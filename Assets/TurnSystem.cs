@@ -200,11 +200,13 @@ public class TurnSystem : MonoBehaviour
                 {
                     typeA = a.P.Stats[0].SpAtk * spaM;
                     typeD = d.P.Stats[0].SpDef * fspdM;
+                    
                 }
                 else
                 {
                     typeA = a.P.Stats[0].SpAtk * fspaM;
                     typeD = d.P.Stats[0].SpDef * spdM;
+                   
                 }
 
             }
@@ -215,11 +217,19 @@ public class TurnSystem : MonoBehaviour
                 {
                     typeA = a.P.Stats[0].Atk * aM;
                     typeD = d.P.Stats[0].Def * fdM;
+                    if (m.Info.Equals("Foe"))
+                    {
+                        typeA = d.P.Stats[0].Atk * faM;
+                    }
                 }
                 else
                 {
                     typeA = a.P.Stats[0].Atk * faM;
                     typeD = d.P.Stats[0].Def * dM;
+                    if (m.Info.Equals("Foe"))
+                    {
+                        typeA = a.P.Stats[0].Atk * aM;
+                    }
                 }
 
             }
@@ -228,6 +238,10 @@ public class TurnSystem : MonoBehaviour
             if (m.Name.Equals("Sonic Boom"))
             {
                 damage = 20;
+            }
+            if(m.Name.Equals("Seismic Toss"))
+            {
+                damage = 50;
             }
             if (a.Equals(pActive))
             {
@@ -243,6 +257,16 @@ public class TurnSystem : MonoBehaviour
                     sliderUpdate(pSlider, pImage, a.P);
 
                 }
+                else if (m.Info.Equals("Leech"))
+                {
+                    cHP = cHP + (int)(damage / 1.5);
+                    if (cHP > a.P.Stats[0].HP)
+                    {
+                        cHP = a.P.Stats[0].HP;
+                    }
+                    pSlider.value = cHP;
+                    sliderUpdate(pSlider, pImage, a.P);
+                }
              
                 else if (m.Info.Equals("AUp"))
                 {
@@ -254,6 +278,11 @@ public class TurnSystem : MonoBehaviour
                     spdM = modDecrease(spdM, 1);
                     
                 }
+                else if (m.Info.Equals("FSpADown"))
+                {
+                    fspaM = modDecrease(fspaM, 1);
+                }
+                
 
                 fcHP = fcHP - damage;
                 if (fcHP < 0)
@@ -279,6 +308,16 @@ public class TurnSystem : MonoBehaviour
                     sliderUpdate(fSlider, fImage, a.P);
 
                 }
+                else if (m.Info.Equals("Leech"))
+                {
+                    fcHP = fcHP + (int)(damage / 1.5);
+                    if (fcHP > a.P.Stats[0].HP)
+                    {
+                        fcHP = a.P.Stats[0].HP;
+                    }
+                    fSlider.value = fcHP;
+                    sliderUpdate(fSlider, fImage, a.P);
+                }
                 else if (m.Info.Equals("AUp"))
                 {
                     faM = modIncrease(faM, 1);
@@ -288,6 +327,11 @@ public class TurnSystem : MonoBehaviour
                     fdM = modDecrease(fdM, 1);
                     fspdM = modDecrease(fspdM, 1);
                 }
+                else if (m.Info.Equals("FSpADown"))
+                {
+                    spaM = modDecrease(spaM, 1);
+                }
+
                 cHP = cHP - damage;
                 if (cHP < 0)
                 {
@@ -323,6 +367,28 @@ public class TurnSystem : MonoBehaviour
                 }
                 fSlider.value = fcHP;
                 sliderUpdate(fSlider, fImage, a.P);
+            }
+        }
+        else if (m.Info.Equals("AUp2"))
+        {
+            if (a.Equals(pActive))
+            {
+                aM = modIncrease(aM, 2);
+            }
+            else
+            {
+                faM = modIncrease(faM, 2);
+            }
+        }
+        else if (m.Info.Equals("DUp"))
+        {
+            if (a.Equals(pActive))
+            {
+                dM = modIncrease(dM, 1);
+            }
+            else
+            {
+                fdM = modIncrease(fdM, 2);
             }
         }
         else
