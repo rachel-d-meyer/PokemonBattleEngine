@@ -75,6 +75,7 @@ class MoveSet
                 buizel.Add(m);
                 squirtle.Add(m);
                 electrode.Add(m);
+                mrmime.Add(m);
                 magikarp.Add(m);
             }
             if(m.ID == (int)move.Scratch)

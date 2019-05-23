@@ -84,7 +84,7 @@ class MoveList
         _moves.Add(new Move(73, "Dazzling Gleam", "Fairy", 80, Move.InfoType.DAMAGE, "S"));
         _moves.Add(new Move(74, "Defense Curl", "Null", 0, Move.InfoType.DEFENCE_UP, "null"));
         _moves.Add(new Move(75, "Soft Boiled", "Null", 0, Move.InfoType.HEAL, "null"));
-        _moves.Add(new Move(76, "Seismic Toss", "Null", 0, Move.InfoType.DAMAGE, "P"));
+        _moves.Add(new Move(76, "Seismic Toss", "Normal", 0, Move.InfoType.DAMAGE, "P"));
         _moves.Add(new Move(77, "Draining Kiss", "Fairy", 50, Move.InfoType.LEECH, "S"));
         _moves.Add(new Move(78, "Quick Attack", "Normal", 40, Move.InfoType.FIRST, "P"));
         _moves.Add(new Move(79, "Moonlight", "Null", 0, Move.InfoType.HEAL, "null"));

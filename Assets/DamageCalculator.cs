@@ -14,19 +14,19 @@ public class DamageCalculator
         List<Stat> resultingStats = new List<Stat>();
         int fcHP = (int)dStats.hp;
         int cHP = (int)aStats.hp;
-        TypeCheck _type = new TypeCheck();
+        TypeCheck type = new TypeCheck();
         double mod = 1;
         if (aStats.hp > 0)
         {
-            if (_type.isSuperEffective(m.Type, d.P))
+            if (type.isSuperEffective(m.Type, d.P))
             {
                 mod = mod * 2;
             }
-            if (_type.isNotEffective(m.Type, d.P))
+            if (type.isNotEffective(m.Type, d.P))
             {
                 mod = mod * 0.5;
             }
-            if (_type.isImmune(m.Type, d.P))
+            if (type.isImmune(m.Type, d.P))
             {
                 mod = mod * 0;
             }
@@ -52,44 +52,62 @@ public class DamageCalculator
                     typeA = a.P.Stats[0].Atk * aStats.defence;
                     typeD = d.P.Stats[0].Def * dStats.defence;
 
+                    if(m.Info == Move.InfoType.FOE)
+                    {
+                        typeA = d.P.Stats[0].Atk * dStats.attack;
+                    }
 
                 }
                 double dam = ((((((2 * 50) / 5) + 2) * m.Power * typeA / typeD) / 50) + 2) * mod;
                 int damage = (int)dam;
+              
                 if (m.Name.Equals("Sonic Boom"))
                 {
                     damage = 20;
                 }
-
-                if (m.Info == Move.InfoType.DRAIN)
+                if (m.Name.Equals("Seismic Toss"))
                 {
-                    aStats.hp = aStats.hp + (damage / 2);
+                    damage = 50;
+                }
 
-                    if (aStats.hp > a.P.Stats[0].HP)
-                    {
-                        aStats.hp = a.P.Stats[0].HP;
-                    }
+                switch (m.Info)
+                {
+                    case Move.InfoType.DRAIN:
+                        aStats.hp = aStats.hp + (damage / 2);
+                        if (aStats.hp > a.P.Stats[0].HP)
+                        {
+                            aStats.hp = a.P.Stats[0].HP;
+                        }
+             
+                        break;
 
+                    case Move.InfoType.LEECH:
+                        aStats.hp = aStats.hp + (int)(damage / 1.5);
+                        if (aStats.hp > a.P.Stats[0].HP)
+                        {
+                            aStats.hp = a.P.Stats[0].HP;
+                        }
+                       
+                        break;
 
+                    case Move.InfoType.ATTACK_UP:
+                        aStats.attack = modIncrease(aStats.attack, 1);
+                        break;
 
-                    
-                    else if (m.Info == Move.InfoType.ATTACK_UP)
-                    {
-                        aStats.attack = (int)modIncrease(aStats.attack, 1);
-                    }
-                    else if (m.Info == Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN)
-                    {
+                    case Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN:
                         aStats.defence = modDecrease(aStats.defence, 1);
                         aStats.specialDefence = modDecrease(aStats.specialDefence, 1);
-                    }
+                        break;
 
-                    if (dStats.hp < 0)
-                    {
-                        dStats.hp = 0;
-                    }
-
-
+                    case Move.InfoType.FOE_SPECIAL_ATTACK_DOWN:
+                        dStats.specialAttack = modDecrease(dStats.specialAttack, 1);
+                        break;
                 }
+
+
+                
+                
+          
 
                 dStats.hp = dStats.hp - damage;
 
@@ -110,32 +128,35 @@ public class DamageCalculator
             }
             else
             {
-
-
-                if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
+                switch (m.Info)
                 {
+                    case Move.InfoType.ATTACK_UP_DEFENCE_UP:
+                        aStats.attack = modIncrease(aStats.attack, 1);
+                        aStats.defence = modIncrease(aStats.defence, 1);
 
-                    aStats.attack = modIncrease(aStats.attack, 1);
-                    aStats.defence = modIncrease(aStats.defence, 1);
+                        break;
 
+                    case Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP:
+                        aStats.specialAttack = modIncrease(aStats.specialAttack, 1);
+                        aStats.specialDefence = modIncrease(aStats.specialDefence, 1);
+
+                        break;
+
+                    case Move.InfoType.SPECIAL_ATTACK_UP_2:
+                        aStats.specialAttack = modIncrease(aStats.specialAttack, 2);
+
+                        break;
+
+                    case Move.InfoType.ATTACK_UP_2:
+                        aStats.attack = modIncrease(aStats.attack, 2);
+
+                        break;
+
+                    case Move.InfoType.DEFENCE_UP:
+                        aStats.defence = modIncrease(aStats.defence, 1);
+
+                        break;
                 }
-                else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
-                {
-
-                    aStats.specialAttack = modIncrease(aStats.specialAttack, 1);
-                    aStats.specialDefence = modIncrease(aStats.specialDefence, 1);
-
-
-                }
-                else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
-                {
-                    aStats.specialAttack = modIncrease(aStats.specialAttack, 2);
-                }
-                else
-                {
-
-                }
-
 
             }
             if (aStats.hp < 0)

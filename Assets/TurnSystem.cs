@@ -15,8 +15,8 @@ public class TurnSystem : MonoBehaviour
     public Button next;
     ActivePokemon fActive, pActive;
     Pokemon player, foe;
-    int cHP, fcHP;
-    double aM = 1, dM = 1, spaM = 1, spdM = 1, faM = 1, fdM = 1, fspaM = 1, fspdM = 1;
+    Stat agentModifier = new Stat(0, 1, 1, 1, 1);
+    Stat playerModifier = new Stat(0, 1, 1, 1, 1);
     Move pMove, fMove;
     bool First;
     battleText b;
@@ -31,40 +31,39 @@ public class TurnSystem : MonoBehaviour
         b = battletext;
         player = a.P;
         foe = f.P;
-        cHP = cHp;
-        fcHP = fcHp;
         pMove = pmove;
 
-
+        agentModifier.hp = fcHp;
+        playerModifier.hp = cHp;
 
         First = first;
         if (!previousA.Equals(pActive))
         {
-            aM = 1;
-            dM = 1;
-            spaM = 1;
-            spdM = 1;
+            playerModifier.attack = 1;
+            playerModifier.defence = 1;
+            playerModifier.specialAttack = 1;
+            playerModifier.specialDefence = 1;
         }
         if (!previousF.Equals(fActive))
         {
-            faM = 1;
-            fdM = 1;
-            fspaM = 1;
-            fspdM = 1;
+            agentModifier.attack = 1;
+            agentModifier.defence = 1;
+            agentModifier.specialAttack = 1;
+            agentModifier.specialAttack = 1;
         }
-        Stat pstats = new Stat(cHP, aM, dM, spaM, spdM);
-        Stat fstats = new Stat(fcHP, faM, fdM, fspaM, fspdM);
+        Stat pstats = playerModifier.Copy();
+        Stat fstats = agentModifier.Copy();
         Agent _Agent = new Agent();
         Move m = _Agent.agent(a, f, pstats, fstats);
         fMove = m;
         fmove = m;
-        AMod.text = aM.ToString();
-        DMod.text = dM.ToString();
-        SaMod.text = spaM.ToString();
-        SdMod.text = spdM.ToString();
+        AMod.text = playerModifier.attack.ToString();
+        DMod.text = playerModifier.ToString();
+        SaMod.text = playerModifier.specialAttack.ToString();
+        SdMod.text = playerModifier.specialDefence.ToString();
         sentences = new Queue<string>();
 
-        if (fcHP > 0 && cHP > 0)
+        if (agentModifier.hp > 0 && playerModifier.hp > 0)
         {
             if (pmove.Info == Move.InfoType.FIRST && fmove.Info != Move.InfoType.FIRST)
             {
@@ -102,13 +101,13 @@ public class TurnSystem : MonoBehaviour
 
         if (sentences.Count < 2)
         {
-            if (cHP <= 0)
+            if (playerModifier.hp <= 0)
             {
                 notifier.SetActive(true);
                 EndDialogue();
 
             }
-            else if (fcHP <= 0)
+            else if (agentModifier.hp <= 0)
             {
                 notifier.SetActive(true);
                 EndDialogue();
@@ -121,16 +120,18 @@ public class TurnSystem : MonoBehaviour
 
             if (First)
             {
-                if (cHP > 0 && fcHP > 0)
+                if (playerModifier.hp > 0 && agentModifier.hp > 0)
                 {
+                    First = !First;
                     damageCalc(fMove, fActive, pActive);
                 }
             }
             else
             {
 
-                if (cHP > 0 && fcHP > 0)
+                if (playerModifier.hp > 0 && agentModifier.hp > 0)
                 {
+                    First = !First;
                     damageCalc(pMove, pActive, fActive);
                 }
             }
@@ -172,286 +173,55 @@ public class TurnSystem : MonoBehaviour
         previousA = pActive;
         previousF = fActive;
 
-        double mod = 1;
-        if (type.isSuperEffective(m.Type, d.P))
+
+        List<Stat> result;
+        if (First)
         {
-            mod = mod * 2;
-        }
-        if (type.isNotEffective(m.Type, d.P))
-        {
-            mod = mod * 0.5;
-        }
-        if (type.isImmune(m.Type, d.P))
-        {
-            mod = mod * 0;
-        }
-        if (a.P.Type.Equals(m.Type))
-        {
-            mod = mod * 1.5;
-        }
 
-        if (m.Info != Move.InfoType.HEAL && !m.Type.Equals("Null"))
-        {
-            double typeA = 0;
-            double typeD = 0;
-            if (m.Attack.Equals("S"))
-            {
-                
-                if (First)
-                {
-                    typeA = a.P.Stats[0].SpAtk * spaM;
-                    typeD = d.P.Stats[0].SpDef * fspdM;
-                    
-                }
-                else
-                {
-                    typeA = a.P.Stats[0].SpAtk * fspaM;
-                    typeD = d.P.Stats[0].SpDef * spdM;
-                   
-                }
+            result = DamageCalculator.calc(m, a, d, playerModifier, agentModifier);
+            playerModifier = result[0].Copy();
+            agentModifier = result[1].Copy();
 
-            }
-            else if (m.Attack.Equals("P"))
-            {
-             
-                if (First)
-                {
-                    typeA = a.P.Stats[0].Atk * aM;
-                    typeD = d.P.Stats[0].Def * fdM;
-                    if (m.Info == Move.InfoType.FOE)
-                    {
-                        typeA = d.P.Stats[0].Atk * faM;
-                    }
-                }
-                else
-                {
-                    typeA = a.P.Stats[0].Atk * faM;
-                    typeD = d.P.Stats[0].Def * dM;
-                    if (m.Info == Move.InfoType.FOE)
-                    {
-                        typeA = a.P.Stats[0].Atk * aM;
-                    }
-                }
+            pSlider.value = (float)playerModifier.hp;
+            sliderUpdate(pSlider, pImage, a.P);
 
-            }
-            double dam = ((((((2 * 50) / 5) + 2) * m.Power * typeA / typeD) / 50) + 2) * mod;
-            int damage = (int)dam;
-            if (m.Name.Equals("Sonic Boom"))
-            {
-                damage = 20;
-            }
-            if(m.Name.Equals("Seismic Toss"))
-            {
-                damage = 50;
-            }
-            if (a.Equals(pActive))
-            {
-                switch (m.Info)
-                {
-                    case Move.InfoType.DRAIN:
-                        cHP = cHP + (damage / 2);
-                        if (cHP > a.P.Stats[0].HP)
-                        {
-                            cHP = a.P.Stats[0].HP;
-                        }
-                        pSlider.value = cHP;
-                        sliderUpdate(pSlider, pImage, a.P);
-                        break;
-
-                    case Move.InfoType.LEECH:
-                        cHP = cHP + (int)(damage / 1.5);
-                        if (cHP > a.P.Stats[0].HP)
-                        {
-                            cHP = a.P.Stats[0].HP;
-                        }
-                        pSlider.value = cHP;
-                        sliderUpdate(pSlider, pImage, a.P);
-                        break;
-
-                    case Move.InfoType.ATTACK_UP:
-                        aM = modIncrease(aM, 1);
-                        break;
-
-                    case Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN:
-                        dM = modDecrease(dM, 1);
-                        spdM = modDecrease(spdM, 1);
-                        break;
-
-                    case Move.InfoType.FOE_SPECIAL_ATTACK_DOWN:
-                        fspaM = modDecrease(fspaM, 1);
-                        break;
-                }
-                
-
-                fcHP = fcHP - damage;
-                if (fcHP < 0)
-                {
-                    fcHP = 0;
-                }
-                fSlider.value = fcHP;
-                sliderUpdate(fSlider, fImage, d.P);
-
-            }
-            else
-            {
-                switch (m.Info)
-                {
-                    case Move.InfoType.DRAIN:
-                        fcHP = fcHP + (damage / 2);
-                        if (fcHP > a.P.Stats[0].HP)
-                        {
-                            fcHP = a.P.Stats[0].HP;
-                        }
-                        fSlider.value = fcHP;
-                        sliderUpdate(fSlider, fImage, a.P);
-                        break;
-
-                    case Move.InfoType.LEECH:
-                        fcHP = fcHP + (int)(damage / 1.5);
-                        if (fcHP > a.P.Stats[0].HP)
-                        {
-                            fcHP = a.P.Stats[0].HP;
-                        }
-                        fSlider.value = fcHP;
-                        sliderUpdate(fSlider, fImage, a.P);
-                        break;
-
-                    case Move.InfoType.ATTACK_UP:
-                        faM = modIncrease(faM, 1);
-                        break;
-
-                    case Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN:
-                        fdM = modDecrease(fdM, 1);
-                        fspdM = modDecrease(fspdM, 1);
-                        break;
-
-                    case Move.InfoType.FOE_SPECIAL_ATTACK_DOWN:
-                        spaM = modDecrease(spaM, 1);
-                        break;
-                }
-
-                cHP = cHP - damage;
-                if (cHP < 0)
-                {
-                    cHP = 0;
-                }
-
-                pSlider.value = cHP;
-
-
-                sliderUpdate(pSlider, pImage, d.P);
-            }
-        }
-       
-        else if (m.Info == Move.InfoType.HEAL)
-        {
-            if (a.Equals(pActive))
-            {
-                cHP = cHP + (a.P.Stats[0].HP / 2);
-                if (cHP > a.P.Stats[0].HP)
-                {
-                    cHP = a.P.Stats[0].HP;
-                }
-                pSlider.value = cHP;
-                sliderUpdate(pSlider, pImage, a.P);
-            }
-            else
-            {
-               
-                fcHP = fcHP + (a.P.Stats[0].HP / 2);
-                if (fcHP > a.P.Stats[0].HP)
-                {
-                    fcHP = a.P.Stats[0].HP;
-                }
-                fSlider.value = fcHP;
-                sliderUpdate(fSlider, fImage, a.P);
-            }
-        }
-        else if (m.Info == Move.InfoType.ATTACK_UP_2)
-        {
-            if (a.Equals(pActive))
-            {
-                aM = modIncrease(aM, 2);
-            }
-            else
-            {
-                faM = modIncrease(faM, 2);
-            }
-        }
-        else if (m.Info == Move.InfoType.DEFENCE_UP)
-        {
-            if (a.Equals(pActive))
-            {
-                dM = modIncrease(dM, 1);
-            }
-            else
-            {
-                fdM = modIncrease(fdM, 2);
-            }
+            fSlider.value = (float)agentModifier.hp;
+            sliderUpdate(fSlider, fImage, d.P);
         }
         else
         {
-            if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
-            {
-                if (a.Equals(pActive))
-                {
-                    aM = modIncrease(aM, 1);
-                    dM = modIncrease(dM, 1);
-                }
-                else
-                {
-                    faM = modIncrease(faM, 1);
-                    fdM = modIncrease(fdM, 1);
-                }
-            }
-            else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
-            {
-                if (a.Equals(pActive))
-                {
-                    spaM = modIncrease(spaM, 1);
-                    spdM = modIncrease(spdM, 1);
-                }
-                else
-                {
-                    fspaM = modIncrease(fspaM, 1);
-                    fspdM = modIncrease(fspdM, 1);
-                }
-            }
-            else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
-            {
-                if (a.Equals(pActive))
-                {
-                    spaM = modIncrease(spaM, 2);
-                }
-                else
-                {
-                    fspaM = modIncrease(fspaM, 2);
+            result = DamageCalculator.calc(m, a, d, agentModifier, playerModifier);
+            playerModifier = result[1].Copy();
+            agentModifier = result[0].Copy();
 
-                }
+            fSlider.value = (float)agentModifier.hp;
+            sliderUpdate(fSlider, fImage, a.P);
 
-            }
-        
-            AMod.text = aM.ToString();
-            DMod.text = dM.ToString();
-            SaMod.text = spaM.ToString();
-            SdMod.text = spdM.ToString();
+            pSlider.value = (float)playerModifier.hp;
+            sliderUpdate(pSlider, pImage, d.P);
 
         }
-        hpText.text = cHP.ToString();
 
-        AMod.text = aM.ToString();
-        DMod.text = dM.ToString();
-        SaMod.text = spaM.ToString();
-        SdMod.text = spdM.ToString();
+
+
+
+
+        hpText.text = playerModifier.hp.ToString();
+        AMod.text = playerModifier.attack.ToString();
+        DMod.text = playerModifier.defence.ToString();
+        SaMod.text = playerModifier.specialAttack.ToString();
+        SdMod.text = playerModifier.specialDefence.ToString();
     }
 
-    
 
-   
-    
+
+
+
     void updateText(Pokemon a, Pokemon d, Move m, Move n, battleText battletext)
     {
         TypeCheck type = new TypeCheck();
+
+        Debug.Log(m.Name + " " + n.Name);
         if (type.isSuperEffective(m.Type, d))
         {
             b.sentences[0] = a.Name + " used " + m.Name + ". It's Super Effective!";
@@ -464,10 +234,13 @@ public class TurnSystem : MonoBehaviour
         {
             b.sentences[0] = a.Name + " used " + m.Name + ". It had no effect.";
         }
-        else
-        { 
+        else 
+        {
             extraText(m, a, 0);
         }
+        
+
+
         if (type.isSuperEffective(n.Type, a))
         {
             b.sentences[1] = d.Name + " used " + n.Name + ". It was Super Effective!";
@@ -478,12 +251,13 @@ public class TurnSystem : MonoBehaviour
         }
         else if (type.isImmune(n.Type, a))
         {
-            b.sentences[1] = d.Name + " used" + n.Name + ". It had no effect.";
+            b.sentences[1] = d.Name + " used " + n.Name + ". It had no effect.";
         }
         else
         {
             extraText(n, d, 1);
         }
+       
     }
 
 
@@ -505,131 +279,45 @@ public class TurnSystem : MonoBehaviour
 
     void extraText(Move m, Pokemon a, int i)
     {
-        if (m.Info == Move.InfoType.DEFENCE_DOWN_SPECIAL_DEFENCE_DOWN)
-        {
-            b.sentences[i] = a.Name + " used" + m.Name + ".It's Defense and Special Defense fell!";
-        }
-        else if (m.Info == Move.InfoType.ATTACK_UP_DEFENCE_UP)
-        {
-            b.sentences[i] = a.Name + " used" + m.Name + ".It's Attack and Defense rose!";
 
-        }
-        else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP)
+        switch (m.Info)
         {
-            b.sentences[i] = a.Name + " used" + m.Name + ".It's Special Attack and Special Defense rose!";
+            
 
-        }
-        else if (m.Info == Move.InfoType.SPECIAL_ATTACK_UP_2)
-        {
-            b.sentences[i] = a.Name + " used" + m.Name + ".It's Special Attack rose sharply!";
+            case Move.InfoType.ATTACK_UP_DEFENCE_UP:
+                b.sentences[i] = a.Name + " used " + m.Name + ".It's Attack and Defense rose!";
 
+                break;
+
+            case Move.InfoType.SPECIAL_ATTACK_UP_SPECIAL_DEFENCE_UP:
+                b.sentences[i] = a.Name + " used " + m.Name + ".It's Special Attack and Special Defense rose!";
+
+                break;
+
+            case Move.InfoType.SPECIAL_ATTACK_UP_2:
+                b.sentences[i] = a.Name + " used " + m.Name + ".It's Special Attack rose sharply!";
+
+                break;
+
+            case Move.InfoType.HEAL:
+                b.sentences[i] = a.Name + " used " + m.Name + ".It restored it's health!";
+
+                break;
+
+            case Move.InfoType.DEFENCE_UP:
+                b.sentences[i] = a.Name + " used " + m.Name + ".It's Defence rose!";
+
+                break;
+
+            default:
+                b.sentences[i] = a.Name + " used " + m.Name;
+
+                break;
         }
-        b.sentences[i] = a.Name + " used " + m.Name;
+
     }
 
-    double modIncrease(double modd, int stages)
-    {
-        do
-        {
-
-            if (modd < 4 && modd >= 1)
-            {
-                modd = modd + 0.5;
-
-            }
-            else if (modd < 1)
-            {
-                modd = modUp(modd);
-
-
-            }
-            stages = stages - 1;
-        } while (stages != 0);
-
-
-
-        return modd;
-    }
-
-
-    double modDecrease(double modd, int stages)
-    {
-     
-        do
-        {
-            if (modd > 1)
-            {
-                modd = modd - 0.5;
-
-            }
-            else if (modd > 0.25 && modd <= 1)
-            {
-                modd = modDown(modd);
-            }
-
-            stages = stages - 1;
-        } while (stages != 0);
-
-        return modd;
-    }
-
-    double modDown(double modd)
-    {
-        if (modd == 0.67)
-        {
-            modd = 0.5;
-        }
-        else if (modd == 1)
-        {
-            modd = 0.67;
-        }
-        else if (modd == 0.5)
-        {
-            modd = 0.4;
-        }
-        else if (modd == 0.4)
-        {
-            modd = 0.33;
-        }
-        else if (modd == 0.33)
-        {
-            modd = 0.3;
-        }
-        else if (modd == 0.3)
-        {
-            modd = 0.27;
-        }
-
-        return modd;
-    }
-
-    double modUp(double modd)
-    {
-        if (modd == 0.67)
-        {
-            modd = 1;
-        }
-        else if (modd == 0.5)
-        {
-            modd = 0.67;
-        }
-        else if (modd == 0.4)
-        {
-            modd = 0.5;
-        }
-        else if (modd == 0.33)
-        {
-            modd = 0.4;
-        }
-        else if (modd == 0.3)
-        {
-            modd = 0.33;
-        }
-        else if (modd == 0.27)
-        {
-            modd = 0.3;
-        }
-
-        return modd;
-    }
 }
+
+   
+
