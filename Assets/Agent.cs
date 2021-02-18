@@ -251,7 +251,7 @@ public class Agent : MonoBehaviour
         }
         else
         {
-
+            
             foreach (Move m in p.P.Moves)
             {
                 if (m.Info != Move.InfoType.FIRST)
